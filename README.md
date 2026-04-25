@@ -32,3 +32,25 @@ What I learned:
 Unreal Engine is powerful, but its default systems can become a hidden constraint.
 To build a custom gameplay system, you must take full control over input handling.
 
+UE5 Devlog #01 — Fixing Widget Duplication with State Control
+Today I finally solved a problem that blocked me for a long time,
+Goal: 
+Create a basic interaction system:
+Press E → show UI
+Press ESC → close UI
+Problem:
+Every time I pressed E, a new widget was created. Cause:
+No state control. The system kept creating new widgets without checking if one already existed.
+Solution:I introduced a boolean variable: IsUIOpen.
+Logic:
+- If IsUIOpen == false → create widget
+- If IsUIOpen == true → do nothing
+- ESC → remove widget + set IsUIOpen = false
+ 
+Result:
+The interaction now works correctly without duplication.                  
+E → open                                                ESC → close No duplication
+What I learned:
+In game systems, input alone is not enough. State management is essential to prevent unintended behavior.
+This is a small step, but it marks the beginning of building a stable interaction system.
+
