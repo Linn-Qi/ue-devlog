@@ -19,7 +19,7 @@ This made debugging extremely confusing:
 Solution:
 I had to manually override the default input system
 1. Modify Input Mapping (Enhanced Input) I also checked the project input setup to make sure ESC was not conflicting with my custom IA_Esc logic. In this version, ESC is handled inside my PlayerController.
- 屏幕截图%202026-04-25%20105429.png
+![debug](./屏幕截图%202026-04-25%20105429.png)
 2. Reassign interaction key to E
 3. Redefine ESC behavior inside PlayerController
 4. Avoid using engine default exit logic
