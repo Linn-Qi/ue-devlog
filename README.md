@@ -46,7 +46,7 @@ Logic:
 - If IsUIOpen == false → create widget
 - If IsUIOpen == true → do nothing
 - ESC → remove widget + set IsUIOpen = false
- 
+ ![debug](./屏幕截图%202026-04-25%20212952.png)
 Result:
 The interaction now works correctly without duplication.                  
 E → open                                                ESC → close No duplication
