@@ -32,7 +32,7 @@ What I learned:
 Unreal Engine is powerful, but its default systems can become a hidden constraint.
 To build a custom gameplay system, you must take full control over input handling.
 
-UE5 Devlog #01 — Fixing Widget Duplication with State Control
+**UE5 Devlog #01 — Fixing Widget Duplication with State Control**
 Today I finally solved a problem that blocked me for a long time,
 Goal: 
 Create a basic interaction system:
