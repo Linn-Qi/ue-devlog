@@ -1,6 +1,6 @@
 # ue-devlog
 My Unreal Engine development log &amp; debugging journey
-UE5 Devlog #00 Fighting UE Default Input System
+**UE5 Devlog #00 Fighting UE Default Input System**
 Before building my own interaction system, I encountered a critical issue with Unreal Engine's default input setup.
 Problem:
 UE has its own default input behavior:
