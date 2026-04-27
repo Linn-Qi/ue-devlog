@@ -104,7 +104,7 @@ This ensures that the PlayerController always knows which object is currently in
 
 (Insert Blueprint Screenshot Here)
 
-屏幕截图 2026-04-27 164431.png
+[屏幕截图 2026-04-27 164431.png](https://github.com/Linn-Qi/ue-devlog/blob/main/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202026-04-27%20164431.png)
 ### 4. System Design — Separate Responsibilities
 
 I rebuilt the logic using three variables in PlayerController:
