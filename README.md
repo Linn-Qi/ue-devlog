@@ -142,7 +142,7 @@ This prevents UI duplication and ensures only one UI exists at a time.
 
 (Insert Blueprint Screenshot Here)
 
-
+<img width="1982" height="1234" alt="屏幕截图 2026-04-27 164400" src="https://github.com/user-attachments/assets/b2222cc1-0628-4a3f-a304-d6fb65f43b93" />
 ### 6. ESC Key — Close UI Logic
 
 ESC is responsible only for UI control.
@@ -164,7 +164,6 @@ This fixes the issue where UI could not close after leaving the object.
 
 (Insert Blueprint Screenshot Here)
 
-<img width="1982" height="1234" alt="屏幕截图 2026-04-27 164400" src="https://github.com/user-attachments/assets/b2222cc1-0628-4a3f-a304-d6fb65f43b93" />
 
 ### 7. Debug Issue — Persistent Blue Text
 
