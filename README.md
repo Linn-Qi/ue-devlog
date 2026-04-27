@@ -1,4 +1,3 @@
-<img width="2771" height="1514" alt="屏幕截图 2026-04-27 164347" src="https://github.com/user-attachments/assets/bf25e6e3-1a31-4c73-a027-535509c8611a" />
 # ue-devlog
 My Unreal Engine development log &amp; debugging journey
 **UE5 Devlog #00 Fighting UE Default Input System**
