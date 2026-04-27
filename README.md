@@ -1,3 +1,4 @@
+<img width="2771" height="1514" alt="屏幕截图 2026-04-27 164347" src="https://github.com/user-attachments/assets/bf25e6e3-1a31-4c73-a027-535509c8611a" />
 # ue-devlog
 My Unreal Engine development log &amp; debugging journey
 **UE5 Devlog #00 Fighting UE Default Input System**
@@ -95,6 +96,7 @@ On Begin Overlap:
 * Get Controller
 * Cast to PlayerController
 * Pass Self into PlayerController
+<img width="2771" height="1514" alt="屏幕截图 2026-04-27 164347" src="https://github.com/user-attachments/assets/0d370848-36fa-4f08-8510-9ffbb02d0b8e" />
 
 Set:
 
@@ -163,6 +165,7 @@ This fixes the issue where UI could not close after leaving the object.
 
 (Insert Blueprint Screenshot Here)
 
+<img width="1982" height="1234" alt="屏幕截图 2026-04-27 164400" src="https://github.com/user-attachments/assets/b2222cc1-0628-4a3f-a304-d6fb65f43b93" />
 
 ### 7. Debug Issue — Persistent Blue Text
 
