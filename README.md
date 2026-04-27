@@ -104,7 +104,7 @@ This ensures that the PlayerController always knows which object is currently in
 
 (Insert Blueprint Screenshot Here)
 
-
+ ![debug](./屏幕截图 2026-04-27 164347.png)
 ### 4. System Design — Separate Responsibilities
 
 I rebuilt the logic using three variables in PlayerController:
