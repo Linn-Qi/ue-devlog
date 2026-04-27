@@ -104,7 +104,6 @@ This ensures that the PlayerController always knows which object is currently in
 
 (Insert Blueprint Screenshot Here)
 
----
 
 ### 4. System Design — Separate Responsibilities
 
