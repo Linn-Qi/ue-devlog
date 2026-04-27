@@ -53,8 +53,6 @@ E → open                                                ESC → close No dupli
 What I learned:
 In game systems, input alone is not enough. State management is essential to prevent unintended behavior.
 This is a small step, but it marks the beginning of building a stable interaction system.
-好，这一版我给你整理成**偏技术教程 / 可配图的 Devlog**，你直接贴图+复制就能用（结构清晰、像别人能学的那种）：
-
 ---
 
 UE5 Devlog #02 — Fixing Self Reference & PlayerController Interaction System
@@ -75,8 +73,6 @@ My initial setup had the following behavior:
 
 This made the system feel unstable and hard to debug.
 
----
-
 ### 2. Root Cause
 
 The issue came from two main problems:
@@ -88,8 +84,6 @@ The issue came from two main problems:
 * UI state (what is currently open)
 
 Because of this, input handling became unpredictable.
-
----
 
 ### 3. Fix — Correct Self Transmission
 
@@ -122,8 +116,6 @@ I rebuilt the logic using three variables in PlayerController:
 
 This separation is the key to making the system stable.
 
----
-
 ### 5. E Key — Open UI Logic
 
 E key is responsible for interaction.
@@ -149,7 +141,6 @@ This prevents UI duplication and ensures only one UI exists at a time.
 
 (Insert Blueprint Screenshot Here)
 
----
 
 ### 6. ESC Key — Close UI Logic
 
@@ -172,7 +163,6 @@ This fixes the issue where UI could not close after leaving the object.
 
 (Insert Blueprint Screenshot Here)
 
----
 
 ### 7. Debug Issue — Persistent Blue Text
 
@@ -188,7 +178,6 @@ Fix:
 * Remove Key
 * Or disable “Print to Screen”
 
----
 
 ### 8. Result
 
@@ -199,8 +188,6 @@ After restructuring:
 * No duplicate widgets
 * Multiple interactable objects work correctly
 * System behavior is stable and predictable
-
----
 
 ### 9. Key Takeaway
 
@@ -213,7 +200,6 @@ CurrentUI = what is currently open
 
 Separating these two concepts fixed almost all issues.
 
----
 
 ### 10. Next Step
 
