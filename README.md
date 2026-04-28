@@ -35,6 +35,7 @@ To build a custom gameplay system, you must take full control over input handlin
 **UE5 Devlog #01 — Fixing Widget Duplication with State Control**
 Today I finally solved a problem that blocked me for a long time,
 Goal: 
+
 Create a basic interaction system:
 Press E → show UI
 Press ESC → close UI
@@ -43,6 +44,7 @@ Every time I pressed E, a new widget was created. Cause:
 No state control. The system kept creating new widgets without checking if one already existed.
 Solution:I introduced a boolean variable: IsUIOpen.
 Logic:
+
 - If IsUIOpen == false → create widget
 - If IsUIOpen == true → do nothing
 - ESC → remove widget + set IsUIOpen = false
@@ -220,16 +222,21 @@ Today was not about a single feature, but more about restructuring the whole int
 1. Interaction system restructuring (main task)
 The biggest change today was reorganizing the responsibility between PlayerController and InteractObject.
 Before
+
 •	PlayerController was handling too much
 •	It was directly controlling interaction content (UI, actions, etc.)
 •	The structure was messy and hard to extend
 After
+
 •	PlayerController
 o	Handles input only (E / ESC)
 o	Keeps track of state (CurrentInteractObject, CurrentUI, IsUIOpen)
 •	InteractObject
 o	Handles actual interaction behavior
 o	(create UI, play animation, trigger logic)
+<img width="749" height="961" alt="屏幕截图 2026-04-28 220340" src="https://github.com/user-attachments/assets/2edc7e73-a750-41ba-8270-c679c73a1189" />
+<img width="1091" height="437" alt="屏幕截图 2026-04-28 220102" src="https://github.com/user-attachments/assets/a7a80248-4a5f-4ded-a860-a5ad4b50bdfb" />
+
 What I changed
 •	Moved interaction logic out of PlayerController into InteractObject
 •	Added functions to standardize interaction calls
@@ -240,51 +247,67 @@ Result
 •	Previous bugs (mainly call chain issues) are fixed
 2. Communication setup (BPI)
 Used BPI as the main communication layer between systems.
+<img width="3216" height="1374" alt="屏幕截图 2026-04-28 220047" src="https://github.com/user-attachments/assets/6c3de77c-2b27-4a3b-ba67-199da803a8b7" />
 Purpose
 •	Let PlayerController trigger interactions without knowing details
 •	Make different interact objects share the same interface
 •	Prepare for future extensions (UI / animation / other events)
+<img width="568" height="308" alt="屏幕截图 2026-04-28 220433" src="https://github.com/user-attachments/assets/fd15d319-360d-47ef-b8fe-c554c7b0f1ab" />
+
+<img width="1867" height="757" alt="屏幕截图 2026-04-28 220002" src="https://github.com/user-attachments/assets/73854b34-aef3-400a-9590-c7d0b63d6289" />
 3. New interaction type: moving object (sphere)
 Today I tried a different type of interaction instead of the usual “open door”.
 What’s different
 •	This one includes movement logic
 •	Not just triggering animation
 •	Needs its own behavior handling
+
 Takeaway
 This helped test whether the current interaction structure is flexible enough.
 So far, it works.
 4. ESC closing logic (important)
 Added a proper ESC-based UI closing system.
+<img width="1091" height="437" alt="屏幕截图 2026-04-28 220102" src="https://github.com/user-attachments/assets/52688224-874c-4b61-a477-ce3ca020a7f6" />
+<img width="2483" height="1429" alt="屏幕截图 2026-04-28 220133" src="https://github.com/user-attachments/assets/1e3779ad-caba-4c15-9e91-386e9098cb49" />
+
 How it works
 •	Controlled by PlayerController
 •	CurrentUI stores the active UI
 •	IsUIOpen controls state
+
 Result
 •	Full UI lifecycle is now complete
 •	(open → interact → close)
 •	Works consistently with E key logic
+
 5. Video UI system (major progress)
 This was the most frustrating part earlier, but today it finally works.
 1. Material issue (critical fix)
 Previous problem:
 •	Video was always black
+<img width="568" height="308" alt="屏幕截图 2026-04-28 220433" src="https://github.com/user-attachments/assets/d92efdc9-7de8-4eac-817d-be85bf5cefa4" />
+
 Fix:
 •	Changed material type from Surface → User Interface
+<img width="749" height="961" alt="屏幕截图 2026-04-28 220340" src="https://github.com/user-attachments/assets/f1715e68-1f55-4c4a-bcfa-93a26f5e37bd" />
 •	Connected Media Texture correctly to Emissive
 2. Playback issue
-Before:
+Before:<img width="2119" height="988" alt="屏幕截图 2026-04-28 220420" src="https://github.com/user-attachments/assets/32403a54-4319-4779-a8b6-83655ce92a9e" />
+
 •	UI opened but video didn’t play
 •	Frame was stuck
 Now:
 •	Video plays normally
 •	Tested multiple times, consistent
 •	Trigger feels smooth
+
 Current understanding (not fully confirmed)
 The issue was probably related to:
 •	Media Player initialization timing
 •	Execution order between UI creation and Play call
 •	Blueprint execution flow
 (Not fully isolated yet, but system is working now)
+
 6. Key takeaway
 Today was less about “making something work” and more about:
 → turning a messy setup into something structured and reusable
@@ -293,6 +316,7 @@ What improved:
 •	Consistent communication (BPI)
 •	Multiple interaction types working
 •	UI lifecycle fully connected
+
 7. Next step
 •	Extend this system to:
 o	subtitle UI
