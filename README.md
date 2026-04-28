@@ -214,3 +214,95 @@ Next upgrade:
 
 Each interactable object will have its own UI Class
 PlayerController will dynamically create the correct UI based on the object
+
+**UE5 Devlog #03: Interaction system restructuring + dynamic interaction + video UI (working version)**
+Today was not about a single feature, but more about restructuring the whole interaction system and pushing it into a more usable state.
+1. Interaction system restructuring (main task)
+The biggest change today was reorganizing the responsibility between PlayerController and InteractObject.
+Before
+•	PlayerController was handling too much
+•	It was directly controlling interaction content (UI, actions, etc.)
+•	The structure was messy and hard to extend
+After
+•	PlayerController
+o	Handles input only (E / ESC)
+o	Keeps track of state (CurrentInteractObject, CurrentUI, IsUIOpen)
+•	InteractObject
+o	Handles actual interaction behavior
+o	(create UI, play animation, trigger logic)
+What I changed
+•	Moved interaction logic out of PlayerController into InteractObject
+•	Added functions to standardize interaction calls
+•	Introduced BPI (Blueprint Interface) for communication
+Result
+•	Interaction logic is much cleaner now
+•	Easier to scale to multiple objects
+•	Previous bugs (mainly call chain issues) are fixed
+2. Communication setup (BPI)
+Used BPI as the main communication layer between systems.
+Purpose
+•	Let PlayerController trigger interactions without knowing details
+•	Make different interact objects share the same interface
+•	Prepare for future extensions (UI / animation / other events)
+3. New interaction type: moving object (sphere)
+Today I tried a different type of interaction instead of the usual “open door”.
+What’s different
+•	This one includes movement logic
+•	Not just triggering animation
+•	Needs its own behavior handling
+Takeaway
+This helped test whether the current interaction structure is flexible enough.
+So far, it works.
+4. ESC closing logic (important)
+Added a proper ESC-based UI closing system.
+How it works
+•	Controlled by PlayerController
+•	CurrentUI stores the active UI
+•	IsUIOpen controls state
+Result
+•	Full UI lifecycle is now complete
+•	(open → interact → close)
+•	Works consistently with E key logic
+5. Video UI system (major progress)
+This was the most frustrating part earlier, but today it finally works.
+1. Material issue (critical fix)
+Previous problem:
+•	Video was always black
+Fix:
+•	Changed material type from Surface → User Interface
+•	Connected Media Texture correctly to Emissive
+2. Playback issue
+Before:
+•	UI opened but video didn’t play
+•	Frame was stuck
+Now:
+•	Video plays normally
+•	Tested multiple times, consistent
+•	Trigger feels smooth
+Current understanding (not fully confirmed)
+The issue was probably related to:
+•	Media Player initialization timing
+•	Execution order between UI creation and Play call
+•	Blueprint execution flow
+(Not fully isolated yet, but system is working now)
+6. Key takeaway
+Today was less about “making something work” and more about:
+→ turning a messy setup into something structured and reusable
+What improved:
+•	Clear separation of responsibility
+•	Consistent communication (BPI)
+•	Multiple interaction types working
+•	UI lifecycle fully connected
+7. Next step
+•	Extend this system to:
+o	subtitle UI
+o	animation UI
+o	scene triggers
+•	Apply video UI to actual demo scene (mirror sequence)
+•	Test stability in more complex setups
+Summary
+Today was the first time the interaction system started to feel like an actual system, not just scattered functions.
+
+
+
+
