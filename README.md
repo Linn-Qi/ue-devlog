@@ -1,38 +1,83 @@
 
+#  Game Design & Technical Development (UE5)
 
-## UI Interaction System (UE5)
+##  Overview
 
-### Key Problems Solved
+This project demonstrates my ability to design and build a structured interaction system in Unreal Engine 5, combined with environment setup and lighting workflows.
 
-1. Confusing Input Behavior
-- Default engine input conflicted with custom interaction design
-→ Created a clear and intuitive control system (E to interact, ESC to close UI)
+The focus is not only on implementation, but on **system stability, debugging, and scalable architecture design**.
 
+---
 
+##  Core Skills Demonstrated
 
-2. UI Duplication
-- Multiple UI windows appeared when interacting repeatedly
-→ Ensured only one UI is displayed at a time
+###  UI Interaction System
 
+- Designed a complete interaction flow (E to interact / ESC to close)
+- Built a **state-controlled UI system** (IsUIOpen / CurrentUI)
+- Solved UI duplication and input conflicts
+- Implemented **object-based interaction architecture** (PlayerController ↔ InteractObject)
+- Built a **stage-based interaction progression system** (Story Stage control)
+- Ensured UI only appears for valid interactable targets
 
+ [View Technical Breakdown](./UI_System.md)
 
-3. Unreliable UI Closing
-- UI could not be consistently closed
-→ Built a stable open/close flow for all UI interactions
+---
 
+###  System Architecture
 
+- Separated responsibilities:
+- PlayerController → input & global state
+- InteractObject → local behavior
+- Designed a **scalable interaction framework** for multiple UI types
+- Built a reusable interaction pipeline (UI / animation / trigger logic)
 
-4. Messy Interaction Logic
-- Interaction behavior was difficult to extend and debug
-→ Reorganized the system into a clean and scalable structure
+---
 
+###  Environment & Level Design
 
+- Created full whitebox level layout
+- Designed player navigation flow and interaction order
+- Structured space for guided progression
 
-### Result
+ (Art breakdown coming soon)
 
-- Smooth and predictable interaction experience
-- No duplication or input conflicts
-- System can easily support new interaction types
+---
 
+###  Lighting Workflow
 
+- Learned and applied baked lighting workflow
+- Built initial lighting setup for readability and mood
+- Controlled contrast to guide player attention
 
+---
+
+##  Key Achievements
+
+- Stable interaction system (no input conflict / no UI duplication)
+- Clear system architecture (easy to expand)
+- Functional prototype combining interaction + environment
+
+---
+
+## 📸 Preview
+
+（放你最好的场景图）
+
+---
+
+##  Notes
+
+This project highlights:
+
+- Problem-solving ability in Unreal Engine
+- Debugging workflow under complex systems
+- System design thinking (not just implementation)
+
+---
+
+##  Next Steps
+
+- Art polish & asset integration
+- Interaction feedback improvement
+- Additional gameplay elements
