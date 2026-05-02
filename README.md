@@ -1,83 +1,46 @@
 
-#  Game Design & Technical Development (UE5)
+🎮 Game Design & Technical Development (UE5)
+🧭 Overview
 
-##  Overview
+This project focuses on building a structured interaction system in Unreal Engine 5, combining:
 
-This project demonstrates my ability to design and build a structured interaction system in Unreal Engine 5, combined with environment setup and lighting workflows.
+UI interaction logic
+system architecture
+level-based progression
+environment and lighting setup
 
-The focus is not only on implementation, but on **system stability, debugging, and scalable architecture design**.
+The project emphasizes debugging, system stability, and scalable design.
 
----
+🧠 Core Systems
+🎮 UI Interaction System
+Built a state-driven UI system (IsUIOpen / CurrentUI)
+Solved UI duplication and input conflicts
+Designed a PlayerController-based interaction control system
+Implemented stage-based interaction progression
+Developed a level-configurable interaction order system (Instance Editable)
+Centralized interaction prompt (Press E) logic
 
-##  Core Skills Demonstrated
+👉 View UI Technical Breakdown
 
-###  UI Interaction System
+🧩 System Architecture
+Separated global and local logic:
+PlayerController → input & state control
+InteractObject → interaction behavior
+Built a scalable interaction pipeline
+Structured system for future expansion
+🎨 Environment & Level Design
+Designed interaction-driven level layout
+Controlled player navigation and interaction flow
+Integrated space design with gameplay logic
 
-- Designed a complete interaction flow (E to interact / ESC to close)
-- Built a **state-controlled UI system** (IsUIOpen / CurrentUI)
-- Solved UI duplication and input conflicts
-- Implemented **object-based interaction architecture** (PlayerController ↔ InteractObject)
-- Built a **stage-based interaction progression system** (Story Stage control)
-- Ensured UI only appears for valid interactable targets
+👉 (Art breakdown coming soon)
 
- [View Technical Breakdown](./UI_System.md)
-
----
-
-###  System Architecture
-
-- Separated responsibilities:
-- PlayerController → input & global state
-- InteractObject → local behavior
-- Designed a **scalable interaction framework** for multiple UI types
-- Built a reusable interaction pipeline (UI / animation / trigger logic)
-
----
-
-###  Environment & Level Design
-
-- Created full whitebox level layout
-- Designed player navigation flow and interaction order
-- Structured space for guided progression
-
- (Art breakdown coming soon)
-
----
-
-###  Lighting Workflow
-
-- Learned and applied baked lighting workflow
-- Built initial lighting setup for readability and mood
-- Controlled contrast to guide player attention
-
----
-
-##  Key Achievements
-
-- Stable interaction system (no input conflict / no UI duplication)
-- Clear system architecture (easy to expand)
-- Functional prototype combining interaction + environment
-
----
-
-## 📸 Preview
-
-（放你最好的场景图）
-
----
-
-##  Notes
-
-This project highlights:
-
-- Problem-solving ability in Unreal Engine
-- Debugging workflow under complex systems
-- System design thinking (not just implementation)
-
----
-
-##  Next Steps
-
-- Art polish & asset integration
-- Interaction feedback improvement
-- Additional gameplay elements
+💡 Lighting Workflow
+Built baked lighting workflow
+Improved readability and player guidance
+Used lighting to support interaction focus
+🚀 Highlights
+Stable interaction system (no UI duplication)
+Controlled interaction order (stage system)
+Clean architecture (clear separation of responsibility)
+Strong debugging and system restructuring ability
