@@ -235,8 +235,6 @@ o	Keeps track of state (CurrentInteractObject, CurrentUI, IsUIOpen)
 •	InteractObject
 o	Handles actual interaction behavior
 o	(create UI, play animation, trigger logic)
-<img width="749" height="961" alt="屏幕截图 2026-04-28 220340" src="https://github.com/user-attachments/assets/2edc7e73-a750-41ba-8270-c679c73a1189" />
-<img width="1091" height="437" alt="屏幕截图 2026-04-28 220102" src="https://github.com/user-attachments/assets/a7a80248-4a5f-4ded-a860-a5ad4b50bdfb" />
 
 What I changed
 •	Moved interaction logic out of PlayerController into InteractObject
@@ -248,14 +246,12 @@ Result
 •	Previous bugs (mainly call chain issues) are fixed
 2. Communication setup (BPI)
 Used BPI as the main communication layer between systems.
-<img width="3216" height="1374" alt="屏幕截图 2026-04-28 220047" src="https://github.com/user-attachments/assets/6c3de77c-2b27-4a3b-ba67-199da803a8b7" />
+
 Purpose
 •	Let PlayerController trigger interactions without knowing details
 •	Make different interact objects share the same interface
 •	Prepare for future extensions (UI / animation / other events)
-<img width="568" height="308" alt="屏幕截图 2026-04-28 220433" src="https://github.com/user-attachments/assets/fd15d319-360d-47ef-b8fe-c554c7b0f1ab" />
 
-<img width="1867" height="757" alt="屏幕截图 2026-04-28 220002" src="https://github.com/user-attachments/assets/73854b34-aef3-400a-9590-c7d0b63d6289" />
 3. New interaction type: moving object (sphere)
 Today I tried a different type of interaction instead of the usual “open door”.
 What’s different
@@ -268,8 +264,7 @@ This helped test whether the current interaction structure is flexible enough.
 So far, it works.
 4. ESC closing logic (important)
 Added a proper ESC-based UI closing system.
-<img width="1091" height="437" alt="屏幕截图 2026-04-28 220102" src="https://github.com/user-attachments/assets/52688224-874c-4b61-a477-ce3ca020a7f6" />
-<img width="2483" height="1429" alt="屏幕截图 2026-04-28 220133" src="https://github.com/user-attachments/assets/1e3779ad-caba-4c15-9e91-386e9098cb49" />
+
 
 How it works
 •	Controlled by PlayerController
