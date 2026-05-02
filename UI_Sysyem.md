@@ -277,30 +277,30 @@ How it works
 •	IsUIOpen controls state
 
 Result
-•	Full UI lifecycle is now complete
-•	(open → interact → close)
-•	Works consistently with E key logic
+-	Full UI lifecycle is now complete
+-	(open → interact → close)
+-	Works consistently with E key logic
 
 5. Video UI system (major progress)
 This was the most frustrating part earlier, but today it finally works.
 1. Material issue (critical fix)
 Previous problem:
-•	Video was always black
+-	Video was always black
 <img width="568" height="308" alt="屏幕截图 2026-04-28 220433" src="https://github.com/user-attachments/assets/d92efdc9-7de8-4eac-817d-be85bf5cefa4" />
 
 Fix:
-•	Changed material type from Surface → User Interface
+-	Changed material type from Surface → User Interface
 <img width="749" height="961" alt="屏幕截图 2026-04-28 220340" src="https://github.com/user-attachments/assets/f1715e68-1f55-4c4a-bcfa-93a26f5e37bd" />
-•	Connected Media Texture correctly to Emissive
+-	Connected Media Texture correctly to Emissive
 2. Playback issue
 Before:<img width="2119" height="988" alt="屏幕截图 2026-04-28 220420" src="https://github.com/user-attachments/assets/32403a54-4319-4779-a8b6-83655ce92a9e" />
 
-•	UI opened but video didn’t play
-•	Frame was stuck
+-	UI opened but video didn’t play
+-	Frame was stuck
 Now:
-•	Video plays normally
-•	Tested multiple times, consistent
-•	Trigger feels smooth
+-	Video plays normally
+-	Tested multiple times, consistent
+-	Trigger feels smooth
 
 Current understanding (not fully confirmed)
 The issue was probably related to:
@@ -330,7 +330,7 @@ Summary
 **UE5 Devlog #04: Interaction Order & Prompt Control+Prompt UI Showing Incorrectly**
 Today was the first time the interaction system started to feel like an actual system, not just scattered functions.
 Devlog – Interaction Order & Prompt Control
-Problem 1: Interaction Order Chaos
+**Problem 1: Interaction Order Chaos**
 Issue
 All interactable objects could be triggered regardless of progression.
 Players could interact with later-stage objects before completing earlier ones, breaking the intended flow.
@@ -360,10 +360,12 @@ Result
 <img width="2309" height="1244" alt="屏幕截图 2026-05-01 163053" src="https://github.com/user-attachments/assets/20925811-69bc-4c0b-aa19-dfd7d84788bf" />
 
 
-Interaction now follows a strict sequence
-Player cannot skip ahead
-System is scalable for future level design
-Problem 2: Prompt UI Showing Incorrectly
+-Interaction now follows a strict sequence
+-Player cannot skip ahead
+-System is scalable for future level design
+
+**Problem 2: Prompt UI Showing Incorrectly**
+
 Issue
 “Press E” prompt appeared on all interactable objects, even when they were not supposed to be interactable yet.
 
@@ -373,12 +375,12 @@ This created confusion:
 Player sees prompt
 But interaction is invalid
 Feels like a bug
-Cause
+-Cause
 Prompt display logic was not synchronized with interaction logic.
 
 ShowPrompt was triggered whenever entering overlap range, without checking stage validity.
 
-Solution
+-Solution
 Moved prompt control into stage validation logic:
 
 Prompt is only shown if object passes stage check
@@ -398,19 +400,19 @@ Show Prompt
 False:
 Do nothing
 
-Result
+-Result
 
 Prompt only appears on valid objects
-No misleading UI feedback
-Player experience becomes clear and predictable
-Key Takeaways
-Interaction logic and UI feedback must be strictly synchronized
-PlayerController controls global state (stage, current object)
-InteractObject only defines its own requirements and behavior
-System Impact
-Improved system clarity
-Easier debugging
-Better player guidance
+-No misleading UI feedback
+-Player experience becomes clear and predictable
+-Key Takeaways
+-Interaction logic and UI feedback must be strictly synchronized
+-PlayerController controls global state (stage, current object)
+-InteractObject only defines its own requirements and behavior
+-System Impact
+-Improved system clarity
+-Easier debugging
+-Better player guidance
 Also creates a foundation for:
 
 Story-driven progression
