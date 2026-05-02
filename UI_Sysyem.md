@@ -98,7 +98,6 @@ On Begin Overlap:
 * Get Controller
 * Cast to PlayerController
 * Pass Self into PlayerController
-<img width="2771" height="1514" alt="屏幕截图 2026-04-27 164347" src="https://github.com/user-attachments/assets/0d370848-36fa-4f08-8510-9ffbb02d0b8e" />
 
 Set:
 
@@ -281,11 +280,11 @@ This was the most frustrating part earlier, but today it finally works.
 1. Material issue (critical fix)
 Previous problem:
 -	Video was always black
-<img width="568" height="308" alt="屏幕截图 2026-04-28 220433" src="https://github.com/user-attachments/assets/d92efdc9-7de8-4eac-817d-be85bf5cefa4" />
+
 
 Fix:
 -	Changed material type from Surface → User Interface
-<img width="749" height="961" alt="屏幕截图 2026-04-28 220340" src="https://github.com/user-attachments/assets/f1715e68-1f55-4c4a-bcfa-93a26f5e37bd" />
+
 -	Connected Media Texture correctly to Emissive
 2. Playback issue
 Before:<img width="2119" height="988" alt="屏幕截图 2026-04-28 220420" src="https://github.com/user-attachments/assets/32403a54-4319-4779-a8b6-83655ce92a9e" />
@@ -323,8 +322,10 @@ o	scene triggers
 Summary
 
 **UE5 Devlog #04: Interaction Order & Prompt Control+Prompt UI Showing Incorrectly**
+
 Today was the first time the interaction system started to feel like an actual system, not just scattered functions.
 Devlog – Interaction Order & Prompt Control
+
 **Problem 1: Interaction Order Chaos**
 Issue
 All interactable objects could be triggered regardless of progression.
@@ -370,9 +371,9 @@ This created confusion:
 Player sees prompt
 But interaction is invalid
 Feels like a bug
+
 -Cause
 Prompt display logic was not synchronized with interaction logic.
-
 ShowPrompt was triggered whenever entering overlap range, without checking stage validity.
 
 -Solution
