@@ -326,5 +326,94 @@ o	scene triggers
 •	Apply video UI to actual demo scene (mirror sequence)
 •	Test stability in more complex setups
 Summary
+
+**UE5 Devlog #04: Interaction Order & Prompt Control+Prompt UI Showing Incorrectly**
 Today was the first time the interaction system started to feel like an actual system, not just scattered functions.
+Devlog – Interaction Order & Prompt Control
+Problem 1: Interaction Order Chaos
+Issue
+All interactable objects could be triggered regardless of progression.
+Players could interact with later-stage objects before completing earlier ones, breaking the intended flow.
+
+Cause
+Interaction logic had no restriction based on progression.
+EnterInteractRange would register any object as valid, without checking whether it should be available at the current stage.
+<img width="2493" height="1503" alt="屏幕截图 2026-05-01 164041" src="https://github.com/user-attachments/assets/3a937dff-454d-4d2c-995e-a149df1e71ae" />
+
+Solution
+Introduced a stage-based interaction control system:
+<img width="2421" height="1369" alt="屏幕截图 2026-05-01 163944" src="https://github.com/user-attachments/assets/92c10a15-c29c-4b8e-8632-dc35c806dcf2" />
+
+Each interactable object has a variable: RequiredStage
+PlayerController maintains: CurrentStoryStage
+Before allowing interaction:
+
+RequiredStage == CurrentStoryStage
+
+<img width="742" height="370" alt="屏幕截图 2026-05-01 162701" src="https://github.com/user-attachments/assets/6fba61e1-d2ec-400d-9706-f703296b6360" />
+
+Only if the condition is true:
+
+Set CurrentInteractObject
+Allow interaction
+Result
+<img width="2309" height="1244" alt="屏幕截图 2026-05-01 163053" src="https://github.com/user-attachments/assets/20925811-69bc-4c0b-aa19-dfd7d84788bf" />
+
+
+Interaction now follows a strict sequence
+Player cannot skip ahead
+System is scalable for future level design
+Problem 2: Prompt UI Showing Incorrectly
+Issue
+“Press E” prompt appeared on all interactable objects, even when they were not supposed to be interactable yet.
+
+This created confusion:
+<img width="2421" height="1369" alt="屏幕截图 2026-05-01 163944" src="https://github.com/user-attachments/assets/74006423-38f7-464a-a1fd-ebd31a7cc841" />
+
+Player sees prompt
+But interaction is invalid
+Feels like a bug
+Cause
+Prompt display logic was not synchronized with interaction logic.
+
+ShowPrompt was triggered whenever entering overlap range, without checking stage validity.
+
+Solution
+Moved prompt control into stage validation logic:
+
+Prompt is only shown if object passes stage check
+Otherwise prompt is not shown
+Implementation logic:
+<img width="762" height="892" alt="屏幕截图 2026-05-01 162441" src="https://github.com/user-attachments/assets/bba72e72-52b7-4b30-b7d8-2733fc0123ff" />
+
+Cast to InteractBase
+→ Get RequiredStage
+→ Compare with CurrentStoryStage
+→ Branch
+
+True:
+Set CurrentInteractObject
+Show Prompt
+
+False:
+Do nothing
+
+Result
+
+Prompt only appears on valid objects
+No misleading UI feedback
+Player experience becomes clear and predictable
+Key Takeaways
+Interaction logic and UI feedback must be strictly synchronized
+PlayerController controls global state (stage, current object)
+InteractObject only defines its own requirements and behavior
+System Impact
+Improved system clarity
+Easier debugging
+Better player guidance
+Also creates a foundation for:
+
+Story-driven progression
+Controlled interaction flow
+Future expansion
 
