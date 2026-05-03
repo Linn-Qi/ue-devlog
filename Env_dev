@@ -1,0 +1,108 @@
+**Devlog 1.2 – Environment Scene Debugging (Collision & Asset Validation)**
+
+-Project: Interior Environment Scene
+-Role: Environment Artist (with Technical Debugging)
+-Focus: Collision Debugging, Asset Validation, Scene Stability
+
+Overview
+
+Today’s session focused on resolving a critical player navigation issue caused by incorrect collision data within the environment.
+
+While the scene was visually complete and spatially coherent, the player was unable to access certain interior areas due to an invisible blocking volume. This required a deeper investigation beyond standard placement and visual checks.
+
+Problem Context
+
+During playtesting:
+
+Player movement was fully functional in open areas
+A specific transition zone (doorway / interior entrance) became completely inaccessible
+No visible geometry suggested a physical obstruction
+
+Initial assumptions (GameMode, Pawn, or global collision setup) were ruled out early.
+
+**Debug Approach**
+
+The debugging process followed a structured elimination workflow:
+
+1. System-Level Validation
+Verified GameMode and Pawn configuration
+Confirmed player spawn and control logic were correct
+
+2. Collision Preset Testing
+Adjusted multiple assets between:
+Block All
+No Collision
+Result: inconsistent and non-deterministic behavior
+
+3. Asset Isolation
+Removed several recently added assets
+Issue persisted → suggested hidden or non-obvious collision source
+
+4. Collision Visualization (Key Step)
+Enabled collision debug view
+Revealed unexpected large-scale collision geometry not visible in standard rendering
+Root Cause Analysis
+
+The issue was traced to:
+
+A small hanger asset with a severely misconfigured collision mesh
+
+**Key problems:**
+
+Collision bounds extended far beyond the visible mesh
+Effectively created a large invisible barrier across the room
+Multiple instances compounded the issue
+The asset visually appeared insignificant, making it difficult to identify
+
+This resulted in a “sealed” environment despite correct spatial layout.
+
+**Resolution**
+Identified the problematic asset via collision debug visualization
+Applied one of the following fixes:
+Disabled collision (No Collision)
+Replaced or corrected the asset
+
+After correction:
+
+Player navigation fully restored
+All blocked areas became accessible
+Scene interaction returned to expected behavior
+Asset Quality Observations
+
+This debugging session exposed broader asset pipeline issues:
+
+Inconsistent pivot placement
+
+Overly complex or fragmented meshes (single object split into dozens of parts)
+Poorly defined or oversized collision volumes
+Lack of standardization in free asset sources
+Key Takeaways
+Collision must always be validated independently from visuals
+Small assets can introduce large-scale systemic issues
+Debug visualization tools (collision view) are essential in environment workflows
+Asset quality directly impacts both:
+Gameplay functionality
+Production efficiency
+
+From an environment production standpoint:
+
+Asset validation (scale, pivot, collision) is not optional — it is part of scene construction.
+
+Pipeline Reflection
+
+This issue highlighted an important shift in workflow:
+
+Moving from asset placement → toward asset evaluation
+Increasing focus on:
+Consistency
+Stability
+Technical reliability
+
+This aligns more closely with a production-oriented environment pipeline, rather than purely visual assembly.
+
+Next Steps
+Clean up unused assets (current project size ~10GB)
+Optimize texture resolution and material consistency
+Begin material refinement pass (roughness / variation)
+Improve lighting for final composition shots
+Finalize 3–5 portfolio-ready camera angles
