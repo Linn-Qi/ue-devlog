@@ -61,7 +61,8 @@ Players could become blocked by decorative objects that were never intended to a
 * No unintended gameplay blocking
 * Cleaner environment setup
 
-**【这里放碰撞调试截图】**
+<img width="3046" height="2005" alt="屏幕截图 2026-05-03 203755" src="https://github.com/user-attachments/assets/3a3f706d-665a-4fe3-ad83-a94f46744b90" />
+<img width="2998" height="1765" alt="屏幕截图 2026-05-03 204146" src="https://github.com/user-attachments/assets/0eaaa092-7eb1-455c-a51b-0d24f555692a" />
 
 ---
 
@@ -108,7 +109,9 @@ Gameplay content is loaded separately after player interaction.
 
 The final build launches into the menu and transitions correctly into gameplay.
 
-**【这里放主菜单蓝图或者关卡结构截图】**
+<img width="1356" height="283" alt="屏幕截图 2026-05-23 152107" src="https://github.com/user-attachments/assets/fe0c23ce-4759-480f-8d1c-f678be49b9e6" />
+<img width="1525" height="774" alt="屏幕截图 2026-05-23 153230" src="https://github.com/user-attachments/assets/705d7655-9c52-41a2-a125-1c434549ab20" />
+
 
 ---
 
@@ -153,7 +156,9 @@ Packaging completed successfully.
 
 Understanding the build environment is essential for successful Unreal Engine deployment.
 
-**【这里放UE报错日志或者VS Installer截图】**
+<img width="3753" height="876" alt="屏幕截图 2026-05-22 235754" src="https://github.com/user-attachments/assets/a50f7716-e452-42c7-869b-03995991748c" />
+<img width="3794" height="885" alt="屏幕截图 2026-05-22 235807" src="https://github.com/user-attachments/assets/558b97c5-97c7-41d7-bd54-fa7014253099" />
+
 
 ---
 
@@ -177,7 +182,9 @@ Initial build size exceeded upload limits.
 
 Successfully uploaded.
 
-**【这里放打包体积截图】**
+<img width="845" height="997" alt="屏幕截图 2026-06-01 131051" src="https://github.com/user-attachments/assets/ff827f99-e5d6-4dab-a3a4-be46b2a146ca" />
+<img width="822" height="1083" alt="屏幕截图 2026-06-01 131017" src="https://github.com/user-attachments/assets/2e144db4-35c8-4100-88b5-2c4b8f778344" />
+
 
 ---
 
@@ -205,7 +212,8 @@ No:
 * Launch failures
 * Packaging errors
 
-**【这里放itch.io下载测试截图】**
+![Uploading 屏幕截图 2026-06-01 131200.png…]()
+
 
 ---
 
