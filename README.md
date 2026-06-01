@@ -78,7 +78,7 @@ World Position Offset animation
 
 Dream-state material blending
 
-[View Material Workflow Breakdown](Material)
+[View Material Workflow Breakdown](Material.md)
 
 ### Packaging & Deployment
 
