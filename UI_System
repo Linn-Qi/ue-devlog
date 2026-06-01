@@ -38,11 +38,11 @@ into a unified gameplay interaction architecture.
 
 This separation keeps interaction logic scalable and easy to maintain.
 
+---
+
 ### Architecture Diagram
 
-**[Insert Architecture Diagram Here]**
 
-(CurrentInteractObject / CurrentUI / IsUIOpen structure)
 
 ---
 
@@ -69,7 +69,7 @@ All interaction requests pass through a single control layer before executing ga
 * Predictable input behavior
 * Easier debugging
 
-**[Insert Input Blueprint Screenshot Here]**
+🚩【这里插入：E键交互蓝图截图】
 
 ---
 
@@ -102,7 +102,7 @@ Before creating a widget, the system validates current UI state.
 * Stable UI lifecycle
 * Consistent user experience
 
-**[Insert UI Lifecycle Blueprint Screenshot Here]**
+🚩【这里插入：IsUIOpen + CurrentUI 蓝图截图】
 
 ---
 
@@ -116,15 +116,6 @@ Before creating a widget, the system validates current UI state.
 
 Each variable serves an independent responsibility.
 
-**CurrentInteractObject**
-tracks available interactions.
-
-**CurrentUI**
-tracks active widgets.
-
-**IsUIOpen**
-controls UI state.
-
 ### Key Design Decision
 
 **Interaction State and UI State must remain independent.**
@@ -137,7 +128,7 @@ Separating these responsibilities eliminated multiple interaction bugs throughou
 * Easier debugging
 * Better scalability
 
-**[Insert Final Interaction Flow Screenshot Here]**
+🚩【这里插入：最终版交互流程图】
 
 ---
 
@@ -161,7 +152,7 @@ Every interactable object follows the same communication contract while maintain
 * Easier maintenance
 * Faster feature expansion
 
-**[Insert Blueprint Interface Screenshot Here]**
+🚩【这里插入：Blueprint Interface截图】
 
 ---
 
@@ -191,7 +182,7 @@ Interaction becomes available only when:
 * Narrative sequencing
 * Prevented premature access
 
-**[Insert Progression System Screenshot Here]**
+🚩【这里插入：Stage系统截图】
 
 ---
 
@@ -238,7 +229,9 @@ The Media Playlist introduced conflicts within the playback workflow.
 
 Stable video playback inside narrative UI sequences.
 
-**[Insert Video Playback Screenshot Here]**
+🚩【这里插入：Media Player流程图】
+
+🚩【这里插入：视频成功播放截图】
 
 ---
 
@@ -268,3 +261,6 @@ Instead of solving individual bugs one by one, the focus gradually shifted towar
 
 The final result is a reusable gameplay interaction framework capable of supporting future UI systems, narrative systems, animation systems, and additional gameplay mechanics.
 
+🚩【这里插入：最终游戏运行截图】
+
+🚩【这里插入：UI实际效果截图】
