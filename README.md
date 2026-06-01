@@ -94,7 +94,7 @@ Visual Studio toolchain troubleshooting
 
 Final Windows packaging workflow
 
-[View Packaging Development Log](Packaging)
+[View Packaging Development Log](Packaging.md)
 
 ## Key Technical Achievements
 
