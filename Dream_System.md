@@ -1,4 +1,4 @@
-<img width="3680" height="1823" alt="image" src="https://github.com/user-attachments/assets/3a7ca42f-dd92-44ff-b3cc-b39842d217b5" /># Dream Transformation System
+
 
 ## Overview
 
