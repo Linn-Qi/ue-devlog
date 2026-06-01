@@ -1,4 +1,4 @@
-# Asset Production & Material Workflow
+<img width="1909" height="1013" alt="屏幕截图 2026-05-17 153348" src="https://github.com/user-attachments/assets/2a419920-fd96-48a9-b4ee-52215dbfaf48" /># Asset Production & Material Workflow
 
 ## **Overview**
 
@@ -119,7 +119,8 @@ Materials became easier to control and projection workflows became significantly
 
 **A good texture starts with a good UV layout.**
 
-<img width="1909" height="1013" alt="屏幕截图 2026-05-17 153348" src="https://github.com/user-attachments/assets/259b6d12-0bad-41a5-b5dc-b05bd2c46ee5" />
+<img width="925" height="668" alt="屏幕截图 2026-05-15 165902" src="https://github.com/user-attachments/assets/bc03238a-6f92-4205-91d9-b25b34d8adb8" />
+
 
 
 ---
@@ -156,7 +157,7 @@ Create small environmental assets quickly without sacrificing visual quality.
 
 A reusable workflow for rapidly producing supporting environment assets.
 
-<img width="1890" height="992" alt="屏幕截图 2026-05-21 140327" src="https://github.com/user-attachments/assets/71eee27f-323f-44ca-b782-924f0103c3e4" />
+
 <img width="1614" height="930" alt="屏幕截图 2026-05-21 105336" src="https://github.com/user-attachments/assets/b92a87f9-fd31-42ed-9615-59e18103ce39" />
 
 ---
@@ -192,8 +193,7 @@ Compared with Blender materials:
 
 Substance Painter became the central material production tool within the pipeline.
 
-**【这里插入：Substance Painter工作界面截图】**
-
+<img width="1890" height="992" alt="屏幕截图 2026-05-21 140327" src="https://github.com/user-attachments/assets/71eee27f-323f-44ca-b782-924f0103c3e4" />
 ---
 
 ## **Glass Material Development**
@@ -231,9 +231,8 @@ The final material balanced realism and visual clarity.
 * Reflection Tuning
 * Interior Readability Optimization
 
-**【这里插入：玻璃效果图】**
-
-**【这里插入：玻璃节点图】**
+<img width="1407" height="866" alt="屏幕截图 2026-05-18 132950" src="https://github.com/user-attachments/assets/f21df2e0-ae03-4afa-ad63-f6642ff3a20c" />
+<img width="1909" height="1013" alt="屏幕截图 2026-05-17 153348" src="https://github.com/user-attachments/assets/d30734fe-99f8-4023-8671-79073e462ff6" />
 
 ---
 
@@ -271,8 +270,8 @@ Used for:
 **Trying to perform every task inside one software often creates unnecessary complexity.**
 
 A dedicated pipeline produces better results and faster iteration.
+<img width="925" height="668" alt="屏幕截图 2026-05-15 165902" src="https://github.com/user-attachments/assets/eba6a54a-64e4-4dca-87b8-660cd7b97497" />
 
-**【这里插入：Blender → SP → UE流程图】**
 
 ---
 
