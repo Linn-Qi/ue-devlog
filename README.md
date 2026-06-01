@@ -51,8 +51,7 @@ Centralized transition management
 
 Editor Preview workflow
 
-→ View Full Dream System Breakdown
-
+[View Full Dream System Breakdown](Dream_System)
 ### Environment Production Pipeline
 
 Blockout → Lighting → Asset Placement → Material Refinement
@@ -65,7 +64,7 @@ Collision validation and environment debugging
 
 Scene optimization process
 
-→ View Environment Development Log
+[View Environment Development Log](Environment)
 
 ### Material Workflow
 
@@ -79,7 +78,7 @@ World Position Offset animation
 
 Dream-state material blending
 
-→ View Material Development Notes
+[View Material Workflow Breakdown](Material)
 
 ### Packaging & Deployment
 
@@ -95,7 +94,7 @@ Visual Studio toolchain troubleshooting
 
 Final Windows packaging workflow
 
-→ View Packaging Devlog
+[View Packaging Development Log](Packaging)
 
 ## Key Technical Achievements
 
@@ -110,6 +109,10 @@ Created a complete environment art pipeline
 Solved complex packaging and deployment issues
 
 Integrated artistic and technical workflows
+
+### Key Technical Achievements
+
+[View Technical Achievements](Achievements)
 
 ## Background
 
