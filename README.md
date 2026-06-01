@@ -35,7 +35,7 @@ Stage-based progression control
 
 UI lifecycle management
 
-[View Full UI Development Log](UI_System)
+[View Full UI Development Log](UI_System.md)
 
 ### Dream Transformation System
 
