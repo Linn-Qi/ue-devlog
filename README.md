@@ -114,7 +114,7 @@ Integrated artistic and technical workflows
 
 ## Background
 
-Bachelor's degree in Lighting & Environmental Design.
+Bachelor's degree in Lighting & Environmental Design.Communication university of China
 
 Recipient of multiple awards at the 21st Asian Design Academy Awards, including Gold Award, Silver Award, and Excellence Awards in lighting, spatial, cultural, and ecological design.
 
