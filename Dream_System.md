@@ -1,4 +1,4 @@
-# Dream Transformation System
+<img width="3680" height="1823" alt="image" src="https://github.com/user-attachments/assets/3a7ca42f-dd92-44ff-b3cc-b39842d217b5" /># Dream Transformation System
 
 ## Overview
 
@@ -16,7 +16,8 @@ The system controls:
 
 through a centralized manager architecture.
 
-**【这里插入：梦境世界最终效果图】**
+<img width="3216" height="1733" alt="屏幕截图 2026-05-31 163612" src="https://github.com/user-attachments/assets/0be5eef6-9744-44ad-bed0-6d2f0fd630f6" />
+
 
 ---
 
@@ -56,7 +57,10 @@ Responsibilities:
 
 All transformation logic became centralized and easier to manage.
 
-**【这里插入：DreamTransformManager蓝图截图】**
+<img width="2900" height="1352" alt="屏幕截图 2026-06-01 102503" src="https://github.com/user-attachments/assets/57e31d72-7a50-481d-bd85-732930c5087e" />
+<img width="2492" height="1083" alt="屏幕截图 2026-06-01 102517" src="https://github.com/user-attachments/assets/f2102a11-ba11-420e-bdfa-72bfdfb7981e" />
+<img width="3807" height="1664" alt="屏幕截图 2026-06-01 102848" src="https://github.com/user-attachments/assets/3ef622c9-f196-47f7-a605-9bcbc936cad1" />
+
 
 ---
 
@@ -80,9 +84,11 @@ The transition is controlled through a single global value.
 
 Entire environments can transition using one centralized control source.
 
-**【这里插入：材质Lerp节点截图】**
+<img width="3344" height="1685" alt="屏幕截图 2026-06-01 103121" src="https://github.com/user-attachments/assets/edc05500-d05c-48df-bd9c-34e27c3dfd60" />
 
-**【这里插入：材质转换前后对比图】**
+
+<img width="3033" height="1626" alt="屏幕截图 2026-05-28 215445" src="https://github.com/user-attachments/assets/862a8458-2cec-4b42-991d-6fac0e728f61" />
+
 
 ---
 
@@ -109,7 +115,8 @@ to occur at the same moment.
 
 The transformation feels like a unified cinematic event rather than separate effects.
 
-**【这里插入：Sequencer截图】**
+<img width="3799" height="1953" alt="屏幕截图 2026-06-01 135239" src="https://github.com/user-attachments/assets/81b09ac9-2aa0-4cf1-856d-272db88eb4f9" />
+
 
 ---
 
@@ -138,7 +145,7 @@ The Preview button allows the final dream state to be visualized instantly insid
 
 Building editor-side preview tools significantly improves production efficiency during look development.
 
-**【这里插入：Preview按钮截图】**
+<img width="3799" height="1953" alt="屏幕截图 2026-06-01 135239" src="https://github.com/user-attachments/assets/eda8d720-d41d-4325-8a70-850f5d7b6a98" />
 
 ---
 
@@ -163,7 +170,8 @@ The system uses chained Blueprint events to create a staged transformation seque
 
 The dream transition becomes part of the narrative experience rather than a simple visual effect.
 
-**【这里插入：镜子触发蓝图截图】**
+<img width="3344" height="1623" alt="屏幕截图 2026-06-01 135516" src="https://github.com/user-attachments/assets/137d6404-e614-49f6-8cdd-f0723ee383d9" />
+
 
 ---
 
@@ -183,7 +191,8 @@ This allowed the environment to remain inside the dream state permanently.
 
 The transformed world persists after the sequence completes.
 
-**【这里插入：Keep State设置截图】**
+<img width="2454" height="1559" alt="屏幕截图 2026-06-01 135807" src="https://github.com/user-attachments/assets/63df3911-a9c9-44fd-b3ba-f5b3eaa3365f" />
+
 
 ---
 
