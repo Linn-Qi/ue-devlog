@@ -145,7 +145,7 @@ The Preview button allows the final dream state to be visualized instantly insid
 
 Building editor-side preview tools significantly improves production efficiency during look development.
 
-<img width="3799" height="1953" alt="屏幕截图 2026-06-01 135239" src="https://github.com/user-attachments/assets/eda8d720-d41d-4325-8a70-850f5d7b6a98" />
+![Uploading 屏幕截图 2026-06-01 135323.png…]()
 
 ---
 
