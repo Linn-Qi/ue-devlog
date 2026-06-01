@@ -46,7 +46,7 @@ This process included:
 Project assets became easier to maintain, modify, and optimize.
 
 
-<img width="1584" height="630" alt="屏幕截图 2026-06-01 141907" src="https://github.com/user-attachments/assets/762201c0-cdb5-4d52-bb67-90f74af63d67" />
+<img width="3806" height="1869" alt="屏幕截图 2026-05-22 172227" src="https://github.com/user-attachments/assets/faba5acc-3b49-4279-bf26-27cb3c909ffc" />
 
 ---
 
@@ -83,6 +83,7 @@ Even small modeling mistakes can create major problems later during texturing an
 
 Clean geometry significantly improved downstream workflows.
 
+<img width="3791" height="1441" alt="屏幕截图 2026-06-01 142555" src="https://github.com/user-attachments/assets/ad647c60-a1e9-44b1-9e9b-876c126f617b" />
 
 ---
 
@@ -118,6 +119,7 @@ Materials became easier to control and projection workflows became significantly
 
 **A good texture starts with a good UV layout.**
 
+<img width="1909" height="1013" alt="屏幕截图 2026-05-17 153348" src="https://github.com/user-attachments/assets/259b6d12-0bad-41a5-b5dc-b05bd2c46ee5" />
 
 
 ---
@@ -154,9 +156,8 @@ Create small environmental assets quickly without sacrificing visual quality.
 
 A reusable workflow for rapidly producing supporting environment assets.
 
-**【这里插入：洗衣机制作流程图】**
-
-**【这里插入：小资产制作案例图】**
+<img width="1890" height="992" alt="屏幕截图 2026-05-21 140327" src="https://github.com/user-attachments/assets/71eee27f-323f-44ca-b782-924f0103c3e4" />
+<img width="1614" height="930" alt="屏幕截图 2026-05-21 105336" src="https://github.com/user-attachments/assets/b92a87f9-fd31-42ed-9615-59e18103ce39" />
 
 ---
 
