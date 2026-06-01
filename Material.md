@@ -270,7 +270,6 @@ Used for:
 **Trying to perform every task inside one software often creates unnecessary complexity.**
 
 A dedicated pipeline produces better results and faster iteration.
-<img width="925" height="668" alt="屏幕截图 2026-05-15 165902" src="https://github.com/user-attachments/assets/eba6a54a-64e4-4dca-87b8-660cd7b97497" />
 
 
 ---
