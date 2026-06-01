@@ -4,7 +4,8 @@
 
 Prepare the project for public release and ensure external users can successfully download, extract, launch, and complete the experience.
 
-**【这里放最终打包成功后的游戏主界面截图】**
+<img width="2558" height="1595" alt="image" src="https://github.com/user-attachments/assets/2089cb77-5cbf-4c9e-bb65-1ea8bf2151f5" />
+
 
 ---
 
@@ -34,7 +35,8 @@ To stabilize the project:
 * Fewer packaging warnings
 * Improved project stability
 
-**【这里放清理前后项目结构截图】**
+<img width="3766" height="1297" alt="屏幕截图 2026-06-01 130634" src="https://github.com/user-attachments/assets/f4732c2a-cc58-4e9f-a400-b12ee22a1264" />
+
 
 ---
 
