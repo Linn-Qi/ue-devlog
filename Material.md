@@ -83,9 +83,6 @@ Even small modeling mistakes can create major problems later during texturing an
 
 Clean geometry significantly improved downstream workflows.
 
-<img width="1808" height="1448" alt="屏幕截图 2026-06-01 142141" src="https://github.com/user-attachments/assets/f0cd91cf-c7d2-4ee3-9c93-770b189007ae" />
-<img width="1939" height="1326" alt="屏幕截图 2026-06-01 142128" src="https://github.com/user-attachments/assets/5fe79be7-d5c4-470d-8bcb-ba63003872b6" />
-
 
 ---
 
