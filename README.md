@@ -64,7 +64,7 @@ Collision validation and environment debugging
 
 Scene optimization process
 
-[View Environment Development Log](Environment)
+[View Environment Development Log](Environment.md)
 
 ### Material Workflow
 
