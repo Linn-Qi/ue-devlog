@@ -97,6 +97,7 @@ before entering the refinement phase.
 
 A complete environmental prototype was created rapidly, allowing faster iteration and evaluation.
 
+<img width="3037" height="1808" alt="屏幕截图 2026-05-03 211844" src="https://github.com/user-attachments/assets/e27de46d-4e73-4065-bbae-b1370aa3ec19" />
 
 
 ---
@@ -133,7 +134,10 @@ The project adopted a fully dynamic lighting workflow.
 
 Improved workflow flexibility and faster scene development.
 
-**【这里放Lumen或灯光测试截图】**
+<img width="3278" height="1818" alt="屏幕截图 2026-05-06 135431" src="https://github.com/user-attachments/assets/d97ec700-2a55-4bfa-bcbb-fda60f4300af" />
+<img width="1202" height="691" alt="屏幕截图 2026-05-05 152921" src="https://github.com/user-attachments/assets/71ce9f90-7d4a-451e-ac1d-474d37ec771e" />
+<img width="2582" height="1780" alt="屏幕截图 2026-05-05 115030" src="https://github.com/user-attachments/assets/21eb32e5-92a5-4bdd-bc7e-aa516ebb9e10" />
+
 
 ---
 
@@ -170,7 +174,7 @@ Unreal Engine
 * Limited runtime control
 * Difficult to modify after export
 
-**【这里放窗帘Alembic动画截图】**
+<img width="3773" height="1504" alt="屏幕截图 2026-06-01 133533" src="https://github.com/user-attachments/assets/da156dbf-6073-4b45-812a-9286c81d659a" />
 
 ---
 
@@ -196,7 +200,8 @@ Small Motion:
 
 This hybrid workflow provided both realism and runtime flexibility.
 
-**【这里放WPO材质节点截图】**
+<img width="2293" height="1611" alt="屏幕截图 2026-06-01 103205" src="https://github.com/user-attachments/assets/80e0bad9-cc66-4ee0-88ff-26ca76cbb5cc" />
+
 
 ---
 
@@ -228,7 +233,8 @@ Validation areas:
 
 Improved scene stability and reduced debugging time later in production.
 
-**【这里放碰撞检测或者调试截图】**
+<img width="698" height="640" alt="屏幕截图 2026-05-26 093216" src="https://github.com/user-attachments/assets/e70f7420-5355-42a8-8550-79a4976df625" />
+
 
 ---
 
@@ -246,7 +252,10 @@ Design considerations included:
 
 The objective was to support storytelling through environmental design rather than relying solely on dialogue or UI.
 
-**【这里放最终效果图】**
+
+<img width="1472" height="792" alt="屏幕截图 2026-06-01 091652" src="https://github.com/user-attachments/assets/bd195f75-588b-4cf9-823c-a008d400a971" />
+<img width="1186" height="920" alt="屏幕截图 2026-05-12 212707" src="https://github.com/user-attachments/assets/582da198-44b1-48f6-a5ef-805daf117821" />
+
 
 ---
 
