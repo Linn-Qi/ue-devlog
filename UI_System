@@ -1,1 +1,270 @@
+# Gameplay Interaction Framework
+
+## Overview
+
+This system was developed to build a **scalable gameplay interaction framework** inside Unreal Engine 5.
+
+Rather than creating isolated interaction events, the goal was to establish a reusable architecture capable of supporting UI interactions, object interactions, progression systems, video playback, and future gameplay expansion.
+
+The framework combines:
+
+* **Input Management**
+* **State Control**
+* **Blueprint Communication**
+* **UI Lifecycle Management**
+* **Interaction Progression Validation**
+
+into a unified gameplay interaction architecture.
+
+---
+
+## System Architecture
+
+### Core Design
+
+**PlayerController** is responsible for:
+
+* Input handling
+* Interaction state management
+* UI state management
+* Active object tracking
+
+**InteractObject** is responsible for:
+
+* UI creation
+* Animation triggering
+* Object-specific logic
+* Story events
+
+This separation keeps interaction logic scalable and easy to maintain.
+
+### Architecture Diagram
+
+**[Insert Architecture Diagram Here]**
+
+(CurrentInteractObject / CurrentUI / IsUIOpen structure)
+
+---
+
+## Input System
+
+### Challenge
+
+Unreal Engine's default input behavior conflicted with the custom interaction workflow.
+
+Required controls:
+
+* **E = Interact**
+* **ESC = Close UI**
+
+### Solution
+
+Implemented a centralized **PlayerController input workflow** using Enhanced Input.
+
+All interaction requests pass through a single control layer before executing gameplay logic.
+
+### Result
+
+* Stable interaction handling
+* Predictable input behavior
+* Easier debugging
+
+**[Insert Input Blueprint Screenshot Here]**
+
+---
+
+## UI Lifecycle Management
+
+### Problem
+
+Every interaction key press created a new widget instance.
+
+This resulted in:
+
+* Duplicate UI creation
+* Input conflicts
+* Unstable behavior
+
+### Solution
+
+Introduced a **state-driven UI management system**.
+
+Core variables:
+
+* **IsUIOpen**
+* **CurrentUI**
+
+Before creating a widget, the system validates current UI state.
+
+### Result
+
+* No duplicate widgets
+* Stable UI lifecycle
+* Consistent user experience
+
+**[Insert UI Lifecycle Blueprint Screenshot Here]**
+
+---
+
+## Interaction State Management
+
+### Core Variables
+
+* **CurrentInteractObject**
+* **CurrentUI**
+* **IsUIOpen**
+
+Each variable serves an independent responsibility.
+
+**CurrentInteractObject**
+tracks available interactions.
+
+**CurrentUI**
+tracks active widgets.
+
+**IsUIOpen**
+controls UI state.
+
+### Key Design Decision
+
+**Interaction State and UI State must remain independent.**
+
+Separating these responsibilities eliminated multiple interaction bugs throughout development.
+
+### Result
+
+* Cleaner architecture
+* Easier debugging
+* Better scalability
+
+**[Insert Final Interaction Flow Screenshot Here]**
+
+---
+
+## Blueprint Interface Communication
+
+### Goal
+
+Reduce coupling between systems.
+
+### Solution
+
+Implemented **Blueprint Interface Communication**.
+
+PlayerController triggers interactions without needing implementation details from individual objects.
+
+Every interactable object follows the same communication contract while maintaining its own behavior.
+
+### Benefits
+
+* Scalable architecture
+* Easier maintenance
+* Faster feature expansion
+
+**[Insert Blueprint Interface Screenshot Here]**
+
+---
+
+## Stage-Based Progression System
+
+### Goal
+
+Control interaction order throughout gameplay.
+
+### Implementation
+
+Each interactable object contains:
+
+* **RequiredStage**
+
+PlayerController maintains:
+
+* **CurrentStoryStage**
+
+Interaction becomes available only when:
+
+**RequiredStage == CurrentStoryStage**
+
+### Result
+
+* Controlled progression
+* Narrative sequencing
+* Prevented premature access
+
+**[Insert Progression System Screenshot Here]**
+
+---
+
+## Video UI Integration
+
+### Problem
+
+Video playback initially failed.
+
+Media assets appeared correctly configured but rendered as a black screen inside UI widgets.
+
+### Investigation
+
+Tested:
+
+* Media Player
+* Media Texture
+* UI Materials
+* Media Playlist
+
+The Media Playlist introduced conflicts within the playback workflow.
+
+### Final Pipeline
+
+**File Media Source**
+
+↓
+
+**Media Player**
+
+↓
+
+**Media Texture**
+
+↓
+
+**UI Material**
+
+↓
+
+**Widget**
+
+### Result
+
+Stable video playback inside narrative UI sequences.
+
+**[Insert Video Playback Screenshot Here]**
+
+---
+
+## Technical Highlights
+
+* **Enhanced Input workflow**
+* **State-driven UI lifecycle management**
+* **PlayerController-centered interaction framework**
+* **Blueprint Interface communication**
+* **Video playback integration**
+* **Stage-based progression control**
+* **Reusable gameplay architecture**
+* **Structured debugging workflow**
+
+---
+
+## Key Takeaway
+
+The biggest lesson from this project was learning how to transform isolated gameplay features into a structured system.
+
+Instead of solving individual bugs one by one, the focus gradually shifted toward:
+
+* **Architecture Design**
+* **State Management**
+* **System Communication**
+* **Scalability**
+
+The final result is a reusable gameplay interaction framework capable of supporting future UI systems, narrative systems, animation systems, and additional gameplay mechanics.
 
