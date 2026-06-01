@@ -1,4 +1,4 @@
-<img width="1909" height="1013" alt="屏幕截图 2026-05-17 153348" src="https://github.com/user-attachments/assets/2a419920-fd96-48a9-b4ee-52215dbfaf48" /># Asset Production & Material Workflow
+
 
 ## **Overview**
 
