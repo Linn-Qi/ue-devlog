@@ -212,7 +212,8 @@ No:
 * Launch failures
 * Packaging errors
 
-![Uploading 屏幕截图 2026-06-01 131345.png…]()
+<img width="528" height="332" alt="屏幕截图 2026-06-01 131428" src="https://github.com/user-attachments/assets/dcc05f15-fcc0-4493-9702-f64a3b3f58c9" />
+
 
 
 
