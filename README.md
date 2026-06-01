@@ -1,46 +1,120 @@
+# Ein Leben Mehr
 
-## Game Design & Technical Development (UE5)
-##Overview
+Narrative Environment & Technical Art Project (UE5)
 
-This project focuses on building a structured interaction system in Unreal Engine 5, combining:
+## Project Overview
 
-UI interaction logic
-system architecture
-level-based progression
-environment and lighting setup
+Ein Leben Mehr is a narrative environment project developed in Unreal Engine 5, focusing on interactive storytelling, environmental atmosphere, and technical problem-solving.
 
-The project emphasizes debugging, system stability, and scalable design.
+Originally created from a lighting and environmental design background, the project evolved into a complete real-time production workflow covering interaction systems, material development, environment art, debugging, optimization, and packaging.
 
-## Core Systems
-## UI Interaction System
-Built a state-driven UI system (IsUIOpen / CurrentUI)
-Solved UI duplication and input conflicts
-Designed a PlayerController-based interaction control system
-Implemented stage-based interaction progression
-Developed a level-configurable interaction order system (Instance Editable)
-Centralized interaction prompt (Press E) logic
+The project combines artistic direction with technical implementation to create an emotionally driven interactive experience.
 
-## View UI Technical Breakdown
+## My Responsibilities
 
-## System Architecture
-Separated global and local logic:
-PlayerController → input & state control
-InteractObject → interaction behavior
-Built a scalable interaction pipeline
-Structured system for future expansion
-## Environment & Level Design
-Designed interaction-driven level layout
-Controlled player navigation and interaction flow
-Integrated space design with gameplay logic
+- Environment Art
+- Lighting Design
+- Blueprint Development
+- Material Creation
+- Interaction Design
+- Technical Debugging
+- Packaging & Deployment
 
-## (Art breakdown coming soon)
+## Technical Breakdown
 
-## Lighting Workflow
-Built baked lighting workflow
-Improved readability and player guidance
-Used lighting to support interaction focus
-## Highlights
-Stable interaction system (no UI duplication)
-Controlled interaction order (stage system)
-Clean architecture (clear separation of responsibility)
-Strong debugging and system restructuring ability
+### UI Interaction System
+PlayerController-based interaction architecture
+
+State-driven UI management (CurrentUI / IsUIOpen)
+
+Interaction object registration system
+
+Blueprint Interface communication
+
+Stage-based progression control
+
+UI lifecycle management
+
+→ View Full UI Development Log
+
+### Dream Transformation System
+
+Global Dream Transformation Manager
+
+Material Parameter Collection control
+
+Real-time environment state switching
+
+Sequencer integration
+
+Centralized transition management
+
+Editor Preview workflow
+
+→ View Full Dream System Breakdown
+
+### Environment Production Pipeline
+
+Blockout → Lighting → Asset Placement → Material Refinement
+
+Blender + Substance Painter + UE5 workflow
+
+Custom asset reconstruction pipeline
+
+Collision validation and environment debugging
+
+Scene optimization process
+
+→ View Environment Development Log
+
+### Material Workflow
+
+PBR material development
+
+Glass material troubleshooting
+
+Dynamic material instances
+
+World Position Offset animation
+
+Dream-state material blending
+
+→ View Material Development Notes
+
+### Packaging & Deployment
+
+Asset validation
+
+Collision cleanup
+
+Project optimization
+
+Map configuration
+
+Visual Studio toolchain troubleshooting
+
+Final Windows packaging workflow
+
+→ View Packaging Devlog
+
+## Key Technical Achievements
+
+Built a scalable interaction framework
+
+Designed a reusable Blueprint architecture
+
+Implemented a global environment transformation system
+
+Created a complete environment art pipeline
+
+Solved complex packaging and deployment issues
+
+Integrated artistic and technical workflows
+
+## Background
+
+Bachelor's degree in Lighting & Environmental Design.
+
+Recipient of multiple awards at the 21st Asian Design Academy Awards, including Gold Award, Silver Award, and Excellence Awards in lighting, spatial, cultural, and ecological design.
+
+This background strongly influences the project's focus on atmosphere, storytelling, player guidance, and environmental composition.
