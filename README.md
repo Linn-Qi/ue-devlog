@@ -110,9 +110,7 @@ Solved complex packaging and deployment issues
 
 Integrated artistic and technical workflows
 
-### Key Technical Achievements
 
-[View Technical Achievements](Achievements)
 
 ## Background
 
