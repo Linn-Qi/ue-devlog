@@ -51,7 +51,7 @@ Centralized transition management
 
 Editor Preview workflow
 
-[View Full Dream System Breakdown](Dream_System)
+[View Full Dream System Breakdown](Dream_System.md)
 ### Environment Production Pipeline
 
 Blockout → Lighting → Asset Placement → Material Refinement
