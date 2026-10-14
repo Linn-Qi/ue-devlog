@@ -80,6 +80,14 @@ Dream-state material blending
 
 [View Material Workflow Breakdown](Material.md)
 
+### Houdini
+
+A dedicated development log for Houdini studies and procedural workflow experiments.
+
+Project examples, node breakdowns, and results will be added as they are documented.
+
+[View Houdini Development Log](Houdini.md)
+
 ### Packaging & Deployment
 
 Asset validation
