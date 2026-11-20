@@ -1,29 +1,249 @@
 # Houdini Development Log
 
-This section is reserved for Houdini studies and procedural workflow experiments.
-
-**Status:** Initial structure. Project examples and results have not yet been documented.
-
 ## Project Overview
 
-To be added: the goal, reference material, and intended output of each experiment.
+### 教室：真实世界 → 异化世界
+
+更新时间：2026-11-20（北京时间）。本文同时作为后续 Codex 的技术交接文档。
+
+目标是在 Unreal Engine 中完成真实教室向异化教室转变的连续镜头。用户已经确定两张视觉参考：正常教室与同一空间的异化状态。后续模型、材质、动画、灯光、HDRI 和程序均服务于这两个目标画面。
+
+- 保留已确定的主机位、构图与主要异化运动，不因 UV 修复随意重做布局。
+- 用户计划于 **2026-11-27 投递**，优先完成镜头可见部分和可验证的成片。
+- 用户确认 Houdini → Substance 3D Painter（SP）→ UE 的制作链已跑通；HDRI 已准备。
+- AI＋Python 生成模型及处理破面已有可用流程。以上流程完成情况来自用户反馈，并非本文作者在 UE 中重新运行验证。
+
+### 当前决策：两套独立资产
+
+| 版本 | 数量与用途 | 当前要求 |
+| --- | --- | --- |
+| 正常世界静态版 | 5×5 桌子＋5×5 椅子，即 25 桌、25 椅 | 先完成静态网格及材质验证，不需要 Alembic |
+| 异化世界动画版 | 保留已定构图与运动；历史版本为 25 桌、20 椅，椅子为构图改成 4×5 | 保持独立，确认代表帧后验证完整 40 帧 |
+
+这是一项制作决策，**不表示两套最终资产均已制作、导出并验收**。
+
+两套模型可以有不同拓扑，但切换处必须检查物体位置、姿态、数量、材质与光照连续性。镜头移动或遮挡可辅助衔接，不能保证数量差异天然不穿帮。蓝图触发／显隐切换逻辑留到资产与动画验证之后。
+
+创建静态版时应隔离源分支，并检查参数中的绝对路径引用；复制节点不保证表达式引用也已独立。不要直接修改动画版的 Grid 来制作静态版。
 
 ## Procedural Workflow
 
-To be added: input geometry, node network, exposed parameters, and output geometry.
+### 1. 静止参考 UV → 动画几何
+
+已经采用的流程：
+
+1. 从桌椅合并几何取得第 1 帧静止参考。
+2. 建立切缝，展开并排列 vertex UV。
+3. 锁定参考结果。
+4. 将 vertex `uv` 复制到具有相同拓扑和顶点对应关系的动画几何。
+5. 让 UV 随既有位置动画及后续几何处理传递，不在每个动画帧重新展开。
+
+用户已观察到木头和部分铁件可在 SP 绘画，多帧运动时纹理基本附着。书本原本已有正确 UV，应保护。**最新整段导出尚需验证。**
+
+#### 重要边界：这是按顺序复制，不是稳定 ID 匹配
+
+此方法依赖点数、面数、顶点数、逐面点序和顶点对应关系一致。
+
+- 不是只修某一个动画帧。
+- 也不是已经实现“每把桌椅按独立 ID 自动匹配 UV”。
+- 数量相同也不能证明顺序相同。
+- 改变复制数量、顺序、源模型结构或 Boolean 拓扑后，旧参考可能失效。
+- 从 20 椅改为 25 椅，必须重建对应静止 UV 参考，并检查依赖拓扑的 Edit 和减面参考。
+- 若未来需要可变数量，应在复制、变形前建立稳定的 `piece_id` 和局部顶点 ID，再进行明确映射。
+
+### 2. 统一纹理密度
+
+在锁定的静止参考后添加 UV Layout，只处理指定材质组，开启 **Scale Islands to Match Their Surface Areas**（当前版本内部参数 `correctareas`），计算后再次锁定，再接回动画 UV 参考输入。
+
+| 组 | 当前用途 |
+| --- | --- |
+| `MAT_WOOD` | 木头 |
+| `MAT_IRON` | 铁件 |
+| `MAT_DOWN` | 脚垫／下部相关分组，实际材质需核对 |
+
+木头与铁件密度调整均有用户运行完成记录；木头棋盘格和 SP 材质表现明显改善。
+
+**限制：**统一岛平均密度不会自动修复岛内部拉伸、坍缩或错误接缝，也不会自动对齐木纹方向。小倒角、螺丝、挂钩产生小岛是正常现象，不等于多生成模型。
+
+参考：[SideFX UV Layout](https://www.sidefx.com/docs/houdini/nodes/sop/uvlayout.html)。
+
+### 3. 在进入减面前携带正确 UV
+
+先前观察到 `merge4`、`divide2`、`edit4` 的数量在检查帧间相同，而原 `polyreduce3` 输出数量变化。修复分支在减面前传递 UV，并为克隆减面节点提供静止参考。
+
+数量变化本身不必然证明 UV 错误，但不能在未确认对应关系时，把静止减面输出的 UV 按索引强行复制给另一个动画减面输出。
+
+参考：[SideFX PolyReduce](https://www.sidefx.com/docs/houdini/nodes/sop/polyreduce.html)。
 
 ## Node Breakdown
 
-To be added: key nodes, their roles, and screenshots of the network.
+以下是已分析版本的关键名称。**新接手时必须读取实际连接，不按项目文件名猜版本。**
+
+| 节点／路径 | 作用 |
+| --- | --- |
+| `/obj/other` | 主对象网络 |
+| `merge4` | 源桌椅合并 |
+| `MOVEABLE` | 桌子可动结构，内部包含 `METAL_CUBBY`、`LEG_UP`、`WOOD`、孔洞、螺丝及 Boolean |
+| `STABLE`、`SETTEL`、`MOVEABLE1`、`subnet1` | 其他固定／可动源结构，具体职责以连接为准 |
+| `DESK_FINAL_REST_1` | 静止参考 |
+| `DESK_FINAL_SEAMS` | 切缝 |
+| `DESK_FINAL_FLATTEN` | 展开 |
+| `DESK_FINAL_UV_LOCKED` | 锁定桌椅 UV |
+| `WOOD_DENSITY_FIXED_UV` | 木头密度调整后的参考 |
+| `IRON_DENSITY_FIXED_UV` | 铁件密度调整后的参考 |
+| `IRON_SIDES_FIXED_UV` | 部分后续项目中的侧面修复参考；并未证明所有外壳都修好 |
+| `DESK_FINAL_UV_ON_ANIMATED_DESKS` | vertex UV 传递；input 0 为动画几何，input 1 为当前锁定参考 |
+| `DESK_FINAL_divide2`、`DESK_FINAL_edit4`、`DESK_FINAL_polyreduce3` | 修复桌椅的后续处理 |
+| `DESK_FINAL_REDUCE_REST` | 克隆减面的静止参考 |
+| `DESK_FINAL_MARK_OLD_DESKS` | 标记原桌椅分支，使用 `desk_uv_replace_exact` |
+| `DESK_FINAL_KEEP_ORIGINAL_BOOKS_AND_PENS` | 保留原流程非桌椅几何 |
+| `DESK_FINAL_REPLACE_DESKS_ONLY` | 合并保留内容与修复桌椅 |
+| `uvquickshade1` | 通常为最终预览 |
+| `IRON_SIDES_REFERENCE_PREVIEW` | 临时静止参考预览，不是动画导出节点 |
+
+用户原有 `edit4` 包含修形／移除多余椅子的操作。改变复制数量后这些选择也可能失效，不要盲目删除或继续沿用。
+
+历史导出链包含：
+
+```text
+最终修复结果
+→ divide1
+→ polyreduce1
+→ clean1
+→ pack3
+→ rop_alembic1
+```
+
+导出前核对实际连接。无实际 UV 的上游 `uvquickshade3` 曾显示自动投影，不能据此证明最终 UV 稳定。
 
 ## Troubleshooting
 
-To be added: observed problems, investigation steps, and verified solutions.
+### 金属外壳／上段杆：UV 没消失，而是过小
+
+表现：桌斗内侧、上下表面及部分横杆有格子，左右外侧板和部分上段杆却没有正常格子，SP 中难以绘画。
+
+#### 文件与证据来源
+
+四个 `UV.7z` 分卷已成功合并、解压。归档中实际文件为：
+
+```text
+final_R_IRON_UNIFORM_20261120_004535.hip
+```
+
+这是统一铁件密度版本，**比后来的 `IRON_SIDES_FIXED` 更早**。
+
+执行环境没有启动 Houdini，而是解析 HIP 中保存的锁定几何数据。静止桌椅参考包含：
+
+- 679,710 点；
+- 632,040 面；
+- 2,554,240 顶点。
+
+示例面号仅适用于该归档对应拓扑：
+
+| 面号 | 实际面积 | UV 面积 | UV 面积／实际面积 |
+| --- | ---: | ---: | ---: |
+| 115036 | 约 0.698602 | 约 3.76048e-10 | 约 5.38286e-10 |
+| 115039 | 约 0.698602 | 约 3.73846e-10 | 约 5.35134e-10 |
+| 115054 | 约 0.358679 | 约 4.75220e-12 | 约 1.32492e-11 |
+
+正常大块铁件的面积比例约为 `0.00114`。示例侧板的比例比它小约两百万倍。
+
+**旧检查只判断 UV 面积小于 `1e-12`，漏过了这些实际面积很大、UV 仍有微小非零面积的面。**
+
+新补丁的判定原则为：
+
+```text
+实际面积有效，并且：
+UV 绝对面积极小，或 UV 面积／实际面积极小
+→ 在静止参考中重新投影异常铁面
+→ 重排铁件 UV
+→ 锁定并沿用原动画传递
+```
+
+当前补丁相对密度阈值是 `1e-7`，这是本项目的修复参数，不是通用标准。微小倒角、近退化面和浮点误差需要考虑。
+
+#### 验证状态
+
+- 归档数据的数值检查证明新条件能命中上述侧板与杆件。
+- 旧 `IRON SIDES DONE` 只证明旧脚本完成，不代表外壳全部修好。
+- **最新 tiny UV 补丁尚未收到用户运行成功及完整动画导出通过的确认。**
+- 不得将当前金属问题写成“已彻底修复”。
+- Boolean 可能影响拓扑和属性，但目前不能证明它是唯一成因；不要直接删除外盒或布尔节点。
+
+### 木头：密度与朝向是两件事
+
+密度已有改善，部分主要桌面 UV 岛仍斜放。
+
+UV 岛旋转不等于模型变歪，也不必然意味着拉伸，但影响二维绘画与木纹方向统一。后续应按桌面局部方向对齐主要岛，再在保持方向的情况下排列；不要强行把全部倒角碎岛变成正方形。
+
+### DefaultMaterial 与材质归属
+
+材质组、`shop_materialpath`、导出材质槽、Painter Texture Set 是不同概念，必须分别检查。
+
+归档中确实有部分 `/shop` 材质路径。不能把所有 DefaultMaterial 面一律改为铁件，也不能仅根据名称猜测零件。可在 SP 临时填充醒目纯色以定位，完成后移除测试层。
+
+任何 UV 更新都应同步 Painter 输入网格及 UE 对应静态／动画资产。已有笔触可能需要重投射；不要承诺自动保留。不能只在 Painter 修改 UV，继续使用 UE 旧 UV 动画。
+
+### 脚本与操作经验
+
+- 默认交付方式：**PowerShell 写入本地脚本，再在 Houdini Python Shell 执行**。用户无法直接下载脚本文件。
+- PowerShell 提示符是 `PS C:\...>`；Houdini Python Shell 提示符是 `>>>`。每段明确运行位置。
+- 文件未生成时不要反复执行 `open`；先确认生成步骤。
+- PowerShell 多条命令放入整体 `& { ... }`，并设置 `$ErrorActionPreference='Stop'`，避免报错后继续写出不完整脚本。
+- 补丁必须验证匹配次数；避免脆弱的无检查文本替换。
+- 子网络输入连接的 `inputNode()` 可能为 `None`。
+- 子节点包含 `RopNode`，不可对所有节点调用 SOP 专属方法。
+- Ramp 参数不能直接 JSON 序列化；报告需显式转换，或使用 `default=str`。
+- 删除 `hou.Node` 前先从列表移除；已删除节点参与相等比较可能触发 `ObjectWasDeleted`。
+- 先备份、另存短文件名；检查失败恢复原连接。
+- “脚本结束”不等于“最终画面与全段动画通过”。
 
 ## Unreal Engine Integration
 
-If applicable, document the export method or Houdini Engine workflow, software versions, and results in Unreal Engine.
+### 当前验收顺序
+
+1. **金属修复**：近看桌斗左右外侧、内侧、上下表面、上段杆、横杆、挂钩；检查覆盖、密度和拉伸，不只看 DONE。
+2. **静态版**：确认 25 桌＋25 椅，使用自己的有效 UV；一帧导入 SP，检查材质槽、绘画覆盖、UV 面积和木纹方向。
+3. **动画版**：保留镜头与运动，先测代表帧，再导出完整 40 帧到 UE。
+4. **UE 检查**：UV 滑动、拓扑跳变、穿插、材质丢失、静态／动画切换穿帮。
+5. **切换逻辑**：资产与镜头通过后再连接蓝图触发。
+
+40 帧的起止范围、帧率和端点包含方式，以实际 Sequencer 安排为准。SP 单帧通过不代表整段动画通过。
+
+### 性能现状
+
+用户报告每帧导出耗时约翻倍，尚未 profiling 确认。
+
+可能存在旧桌椅链与克隆修复链重复计算，不可未经测量断言。归档含四份大型锁定几何快照，是 HIP 较大的原因之一；不要为了省空间删除唯一可回退参考。
+
+锁定 UV 应避免每帧重新展开。先测 cook 与写盘耗时，再决定缓存策略。缓存首次生成加导出不一定更快，主要有利于后续重复使用。
 
 ## Results & Next Steps
 
-To be added: output screenshots, current limitations, and planned improvements.
+### 状态总表
+
+| 项目 | 当前状态 |
+| --- | --- |
+| Houdini → SP → UE 链路、HDRI | 用户确认已跑通／准备 |
+| 书本原有 UV | 已有正确结果，修复中需保护 |
+| 静止参考 UV 传递动画 | 已有多帧附着的用户观察，最新全段仍待验证 |
+| 木头纹理密度 | 已运行并明显改善 |
+| 部分铁件与横杆 | 已改善 |
+| 桌斗外侧板、部分上段杆 | 小 UV 成因已由归档数据确认；最新补丁待运行与画面验收 |
+| 木头主要 UV 岛朝向 | 待处理 |
+| 25 桌＋25 椅静态版 | 制作决策已确定，最终导出与材质待验收 |
+| 动画版完整 40 帧 | 待 UE 验证 |
+| 蓝图切换 | 后续工作 |
+
+### 后续 Codex 接手顺序
+
+1. 确认用户当前打开的真实项目、当前椅子数量、UV 参考输入。
+2. 核对最新金属补丁实际执行结果，保留正常书本、木头与镜头。
+3. 按两套资产决策完成静态版与动画版验证。
+4. 继续墙体与教室陈设，避免扩展无关系统。
+
+### 墙体沿用的原则
+
+最终所需拓扑完成后建立 UV，变形前保留稳定对应关系，动画帧间不重复展开。
+
+若墙体逐帧 Boolean、切割或生成新面，应先设计稳定分块、预切模型或可验证映射；**不能直接把冻结帧 UV 按顶点顺序复制到变化拓扑。**
