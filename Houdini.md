@@ -4,7 +4,9 @@
 
 ### 教室：真实世界 → 异化世界
 
-更新时间：2026-11-24（北京时间）。本文同时作为后续 Codex 的技术交接文档。
+更新时间：2026-11-25（北京时间）。本文同时作为后续 Codex 的技术交接文档。
+
+**最新成功：教室本体已完成正确 UV 接回原动画、40 帧导出（4 GB 多／十多分钟），并获得 SP 与 UE 画面反馈。** 当前基线为 `ROOM_DIRECT_UV_20261125_004415_787159.hip`，完整文件档案、排雷、接线、代码与导出步骤见[本次成功记录](#room-uv-animation-20261125)。桌椅是另一套网络，其历史验收状态在下文单独保留。
 
 目标是在 Unreal Engine 中完成真实教室向异化教室转变的连续镜头。用户已经确定两张视觉参考：正常教室与同一空间的异化状态。后续模型、材质、动画、灯光、HDRI 和程序均服务于这两个目标画面。
 
@@ -26,9 +28,521 @@
 
 创建静态版时应隔离源分支，并检查参数中的绝对路径引用；复制节点不保证表达式引用也已独立。不要直接修改动画版的 Grid 来制作静态版。
 
+<a id="room-uv-animation-20261125"></a>
+
+## 2026-11-25：教室本体的正确 UV 接回原动画，完整导出成功
+
+> **当前教室本体的已确认基线：`E:/1120/ROOM_DIRECT_UV_20261125_004415_787159.hip`。**
+>
+> 本次处理的是 `/obj/classroom_generator/geo1`，不是 `/obj/other` 的桌椅修复。正确的静态 UV 已有，最终工作是把它按正确对应写入原动画网格，移除会覆盖它的旧 UV 处理。保留原细分、变形和动画控制，不复制另一套动画继续制作。
+
+### 1. 已经确认的结果，以及证据范围
+
+| 项目 | 本次结果／证据 |
+| --- | --- |
+| 正确源 UV | 已从用户上传 HIP 中解码两份 Stash 的实际几何；墙体为可辨认的大面、条带和门窗开口布局 |
+| Houdini 中的动画附着 | 用户展示静止状态及第 46 帧扭曲状态，棋盘格随原教室动画变形；用户确认这次正确 |
+| 整段导出 | 用户实测反馈：**共 40 帧，文件 4 GB 多，十多分钟导出完成** |
+| SP | 用户已打开导出的教室；Texture Set 列表为 `ROOM_*` 分类，能看到输入 UV |
+| UE | 用户最新截图显示带材质的墙、地板、窗帘、灯具等处于异化弯曲状态，并明确确认结果正确 |
+| 自动材质脚本 | 后续另提供了 Painter 基础材质铺底试做代码；尚无该代码成功运行反馈，不作为本次 UV 成功的证据 |
+
+这是一次实际完成导出并获得 SP／UE 画面反馈的结果。它不是“只创建了预览节点”或“只打印 DONE”。同时，**没有进行全 40 帧逐面零重叠、零越界、零拉伸的自动验收**；末端代码对越界角点只打印数量，不会因数量非零自动阻止导出。
+
+40 是用户反馈的总帧数，不等于已核实导出范围必然为 `1–40`；最终起止帧、帧率及 ABC 精确文件名未回报。第 46 帧是预览证据，不能据此擅自把动画结束帧设为 46、48 或时间轴默认的 240。
+
+分析侧读取、解包了 HIP、节点参数、关键帧与保存的几何，并测试了数据对应逻辑；没有在分析机器上启动 Houdini 21。实际 cook、导出、SP 和 UE 画面由用户本机运行与反馈确认。
+
+### 2. 文件档案：哪些能作为基线，哪些已经废弃
+
+| 文件／数据 | 用途与状态 |
+| --- | --- |
+| `E:/1120/1124.hip` | 最初工程之一；不要用新结果覆盖唯一原始工程 |
+| `1124_BEFORE_EXPORT_CHECK_20261124_170931_622594.hip` | 本次教室导出、UV 排查的早期归档 |
+| `E:/1120/ROOM_UV_SOURCE_20261124_225735.json` | 从 `merge4` 导出的低面数源诊断数据：点、逐面点序、UV、分组和部分属性 |
+| `ROOM_UV_PREVIEW_20261124_233142_413254.hip` | 第一版已保存的低面数 UV／材质预览 |
+| `ROOM_ALL_UV_PREVIEW_20261124_234637_284042.hip` | 扩展到整套教室材质分类的静态 UV 预览；不是动画导出结果 |
+| `ROOM_UV_ANIMATION_20261125_000554_929626.hip` | 曾创建复制动画、携带 `uv_room_saved` 的分支；方案已废弃 |
+| `ROOM_UV_INSET_20261125_001817_905972.hip` | 曾统一缩小 UV 以通过范围检查；单独墙体仍被传乱，**不是成功版本** |
+| `ROOM_UV_INSET_20261125_001817_905972.7z.001`～`.004` | 用户重新上传的四分卷；实际重新读取了其中 HIP，不只根据截图猜测 |
+| `ROOM_BEFORE_DIRECT_UV_20261125_004415_787159.hip` | 成功改接前的自动备份 |
+| **`ROOM_DIRECT_UV_20261125_004415_787159.hip`** | **本次成功另存文件，原动画链直接使用正确 UV** |
+
+四个分卷按文件名的 `.001 → .004` 顺序合并后解压。得到的失败现场 HIP 为 417,649,920 字节；不能按上传目录 UUID 排序合并分卷。离线读取到 3,783 条 HIP 归档记录。两份 Stash 的几何存放在 `.parm` 中的 `geometry:` 编码值，不能因为没有同名 `.data` 文件就判断它们没有保存几何。
+
+成功工程内已保存正确 UV 的 Stash，以及实际使用的节点脚本。**日常打开、播放、导出不依赖旧 Python Shell 的临时变量或上述源 JSON。** 源 JSON 和旧工程仍应保留，供诊断与重建，不是每次打开成功工程都要重新读取的必需输入。
+
+### 3. 工程实际长什么样
+
+```text
+/obj
+├─ other
+│  └─ 桌椅、书本、纸笔与此前 DESK_FINAL_* UV 修复
+└─ classroom_generator
+   └─ geo1
+      ├─ 墙／地／顶、门窗、百叶、窗帘、灯具、空调、暖气
+      ├─ 黑板、公告板、书架、书本纸张、管线等生成分支
+      ├─ merge4                         # 教室本体源合并，含多类物体
+      ├─ 原翻面修正、细分、法线、bend3 动画与后处理
+      ├─ ROOM_UV_SOURCE_PREVIEW         # 已保存的第一份正确静态 UV
+      └─ ROOM_ALL_UV_20261124_234637_284042
+                                         # 最终采用的整套正确 UV 源 Stash
+```
+
+两个网络都有 `merge4`、`polyreduce1` 等常见名称。脚本必须使用完整路径，不能将教室修复误接到桌椅网络。
+
+从重新上传的 HIP 中读出的正确参考几何：
+
+| 点数 | 面数 | 面角／vertex 数 | UV |
+| ---: | ---: | ---: | --- |
+| 14,780 | 20,443 | 72,611 | vertex `uv`，每个面角 3 个 float 分量 |
+
+其中 `ROOM_Walls` 对应 245 个源面。这个数量仅是低面数参考；最终模型经过细分、三角化与减面后面数会增加，不能因最终墙体不是 245 面就判定模型被重复生成。
+
+#### 两级细分是原造型／动画的一部分
+
+实际读取版本包含：
+
+```text
+subdivide1
+  algorithm = osdbilinear
+  iterations = 3
+  group = * ^WIRE_FITTING ^TIED_CURTAIN_CLOTH ^TIED_CURTAIN_BAND
+          ^MAT_PAPER ^MAT_BOOK_COVER ^Ceiling ^Heater
+
+DETAIL_SUBDIVIDE_2
+  algorithm = osdbilinear
+  iterations = 2
+  group = WIRE_FITTING TIED_CURTAIN_CLOTH TIED_CURTAIN_BAND
+          MAT_PAPER MAT_BOOK_COVER Ceiling Heater
+```
+
+墙体需要这些细分支撑扭曲。成功修复没有降低这两个级数，也没有把所有物体改成同一级别。历史截图曾出现约 1,275,536 个四边形，经 Divide 变成约 2,551,072 个三角面；这是当时版本的截图计数，不是成功版本所有帧的统一面数。
+
+### 4. 先得到正确的静态展开
+
+正确展开的目标：大平面能看出所属结构，墙上门窗开口保留，长条有连续性，每个材质集内部合理排在 0–1 并留边，避免意外重叠；曲面和小零件不强行变成长方形。
+
+本次在低面数 `merge4` 源上完成以下工作，未对百万面动画逐帧运行 UV Layout：
+
+1. 根据已有语义分组区分墙、地、顶、木头、金属、纸、书、布等。
+2. 对墙、地、顶等缺少有效 UV 的硬表面，用一致的平面基准投影，将同平面且不互相覆盖的面组织成可读图块；保留墙体开口。
+3. 对纸、书、窗帘等已有连续 UV 的部分尽量沿用；其他硬表面在整套静态预览中按平面整理。已做好的墙体展开继续保留。
+4. 为图块按表面积调整密度并排布。静态脚本使用固定方向的确定性排布，按各材质集独立放入 0–1，按 2048 分辨率取约 4 像素单侧边距。
+5. 检查数值有限、有效 UV 面积、范围，并检查写 UV 前后源点位置字节一致。小面积运算使用 float64，避免 float32 差分消去造成误判。
+6. 用 Stash 保存实际几何和 UV，而非只保留 Shell 中的数组。分别查看墙体和其他分类，再保存预览 HIP。
+
+最初静态排布算法曾离线检查整批 20,443 面的有效性与重叠；整套硬表面后续又整理过，不能把初版检查结果自动当成最终动画减面结果的证明。重新上传后的正确墙体 Stash 已实际解码、绘图检查，确认此前成功的大面布局仍在。
+
+#### 15 个材质集与 UV 空间
+
+| 最终分类 | 主要原分组／用途 |
+| --- | --- |
+| `ROOM_Walls` | `Wall__` |
+| `ROOM_Floor` | `FLOOR` |
+| `ROOM_Ceiling` | `Ceiling` 中的结构部分；灯具另分 |
+| `ROOM_Windows` | `Window`、`BLINDS`，以及已核对的 18 个未分类窗台面 |
+| `ROOM_Wood` | `MAT_WOOD`、`BLACKBOARD_WOOD`、`DOOR_WOOD` |
+| `ROOM_Metal` | 暖气、门金属、框架、管线及夹件、图钉、线管配件、音箱金属等 |
+| `ROOM_Fixtures` | `AC`、音箱主体与格栅 |
+| `ROOM_Glass` | `DOOR_GLASS` |
+| `ROOM_Blackboard` | 黑板背面、表面、粉笔与毛毡相关分组 |
+| `ROOM_DisplayBoard` | `MAT_BOARD` |
+| `ROOM_Paper` | `MAT_PAPER`、`MAT_POSTER` |
+| `ROOM_Books` | `MAT_BOOK_COVER` |
+| `ROOM_Tape` | `MAT_TAPE` |
+| `ROOM_Curtain` | `TIED_CURTAIN_CLOTH`、`TIED_CURTAIN_BAND` |
+| `ROOM_Lights` | `light`、`zhao`；原来与 Ceiling 组有包含关系，分类时作明确区分 |
+
+每个材质集独立使用自己的 0–1 区域。因此整屋一起显示 UV 时，不同材质集会叠在同一画布；这不等于同一材质集内部发生错误重叠。**但本次曾出现单独显示墙体仍有跨图块大三角、棋盘格乱拉的情况，那是真正失败，不能用“只是叠加”解释。**
+
+同样，三角形几何不等于逐三角形的碎 UV 岛；连通图块内部保留三角线正常。要看图块边界、连续性、开口以及模型上的棋盘格，而非只数内部线条。
+
+### 5. 原始错误链与真正的覆盖点
+
+```text
+merge4
+→ BOARD_WIRE_FACE_CHECK
+→ BOARD_WIRE_FACE_FIX
+→ SPEAKER_FACE_FIX
+→ transform6
+→ subdivide1 → DETAIL_SUBDIVIDE_2
+→ normal1 → bend3 → merge14
+→ divide1
+→ uv_SP_FIX                 # 在动画后重新写 uv
+→ divide2
+→ polyreduce1 → clean4 → pack1 → rop_alembic1
+
+divide1
+→ timeshift1（frame = $F，并未冻结第 1 帧）
+→ uvautoseam1 → uvflatten1 → uvlayout2
+→ attribcopy1 的 input 1
+
+uv_SP_FIX → attribcopy1 的 input 0
+attribcopy1 → divide2 的 input 1（参考几何）
+```
+
+`divide2` 的第二输入不是可以随意删除的垃圾连线。SideFX Divide 支持参考几何输入用于凸化判断，使用其中的点位置；本文件 `timeshift1` 保留 `$F` 时间语义，旧切缝、展平、排布均只操作 `uv`。最终把这份位置参考直接接到 `timeshift1`，去除中间旧 UV 布局依赖，保留参考用途。
+
+`attribcopy1` 在归档中的 `copydata` 为 off、`copyp` 为 on。不要仅凭其名称就假定它已经正确复制 UV，也不要对其他项目照搬本次参考输入改接；先核对该项目第二输入究竟是否改变位置或拓扑。
+
+### 6. 最终成功接线：正确 UV 直接进入原动画
+
+```text
+merge4（原来的、可随时间更新的模型输入）
+  ↓ input 0
+ROOM_UV_ANIM_INPUT
+  ↑ input 1 = ROOM_ALL_UV_20261124_234637_284042（正确 UV Stash）
+  │ 只按对应面角写正式 vertex uv，不从 Stash 复制 P
+  ↓
+ROOM_UV_TAG_AS_TEXTURE
+  │ setattribtypeinfo(0, "vertex", "uv", "texturecoord")
+  ↓
+BOARD_WIRE_FACE_CHECK → BOARD_WIRE_FACE_FIX → SPEAKER_FACE_FIX
+  ↓
+transform6 → subdivide1 → DETAIL_SUBDIVIDE_2 → normal1
+  ↓
+bend3（原节点、原关键帧、原控制器）→ merge14 → divide1
+  ↓
+divide2（input 0 = divide1；input 1 = 原 timeshift1）
+  ↓
+polyreduce1（原参数，seamattribs = * ^N）→ clean4
+  ↓
+ROOM_UV_ANIM_MATERIALS（按传下来的 15 类分配材质）
+  ↓
+ROOM_UV_ANIM_OUT（校验正式 UV、清理最终属性和分组；不重排、不缩放）
+  ├─ ROOM_UV_ANIM_CHECK（仅棋盘格预览）
+  └─ pack1 → rop_alembic1（原正式导出）
+```
+
+`ROOM_UV_ANIM_*` 名称是历史沿用；这些保留下来的节点现在只是 UV、材质与检查辅助，**并不代表仍使用复制的动画系统**。原 `bend3` 继续生效，后续修改原控制器和关键帧可以沿同一主链传下去。
+
+成功安装时按原参数原始值及关键帧序列化结果作前后比较，核对变换、两级细分、法线、Bend、两个 Divide、PolyReduce、Clean 未被改写。UV 拷贝阶段另外核对源 `P` 字节不变。
+
+**这里保留的是原节点、参数和动画控制，不是承诺最终网格逐点逐面字节一致。** PolyReduce 会考虑 UV 接缝；换成正确 UV 后，即使减面比例仍为 76.7%，也可能改变三角面合并选择。逐帧减面还可能产生拓扑变化，需要结合动画与最终导出检查。
+
+#### 正确的 UV 复制单位是“面＋局部面角”
+
+```python
+target = g.findVertexAttrib("uv")
+reference = r.findVertexAttrib("uv")
+for dst_prim, ref_prim in zip(g.prims(), r.prims()):
+    dst_vertices = dst_prim.vertices()
+    ref_vertices = ref_prim.vertices()
+    # 实际脚本在写入前检查每面点数、逐面点序和零件顺序。
+    for dst_vertex, ref_vertex in zip(dst_vertices, ref_vertices):
+        dst_vertex.setAttribValue(target, ref_vertex.attribValue(reference))
+```
+
+同样的点数、面数甚至逐面点序，并不能单独保证两个 geometry detail 的内部线性 vertex 存储顺序完全一致。之前直接跨 detail 拷贝整块 UV 字节数组只检查了拓扑，缺少这层保证。本次改为显式的面角对应，并以保存的 72,611 个参考面角测试了内部线性存储打乱时仍能正确复制。
+
+这移除了一个不安全假设，**没有证明它是现场所有损坏的唯一原因**。成功版本同时修正了正式 UV 的接缝保护、旧展开覆盖以及旧布局依赖。
+
+如果未来改变源模型、复制数量、面顺序、Boolean 或动态生成新面，应重新检查对应。拓扑或零件顺序不匹配时脚本停止；不使用最近点盲配，更不把静止 Stash 的位置替换进动画。
+
+#### 分组与材质的保留顺序
+
+在源 UV 拷贝节点中保留原始分组，并额外传递正确参考的 `ROOM_*` 分类。原分组仍被细分、翻面和动画使用，不能提前删除。只有全部几何处理完成后，才在最终输出清理旧分组，保留 15 个分类并统一 `material_name`、`shop_materialpath`。
+
+旧 `unreal_material`、`material_id` 在最终输出中移除，避免残留旧材质标识与新分类打架；不删除原来的材质节点。几何分组、材质路径、Alembic Face Sets 与 SP Texture Sets 是相关但不同的机制，要分别确认。
+
+#### 本次实际移除的旧处理
+
+- 旧 UV 五个节点：`uv_SP_FIX`、`attribcopy1`、`uvautoseam1`、`uvflatten1`、`uvlayout2`。
+- `uvquickshade2` 的查看输入改到 `divide1`，避免删除节点后留下旧依赖。
+- 错误复制主链 `ROOM_ANIM_*`，以及复制的 `ROOM_UV_ANIM_PACK`、`ROOM_UV_ANIM_EXPORT_TEST`。
+- 错误分支的临时墙体查看节点。
+- 保留正确静态 Stash、原模型分支和原动画系统；不再携带 `uv_room_saved`，不再用整体缩放通过范围检查。
+
+### 7. 本次排雷表：不要重复采用的做法
+
+| 曾出现的问题／错误判断 | 现场证据与正确处理 |
+| --- | --- |
+| 因导出慢就降低墙体 Subdivide | 用户已经证明降低后形变不满足要求；保留原细分，先排查重复 UV 计算依赖 |
+| 认为卡在 Divide 就一定是 Divide 独自耗时 | 第 39 帧的强制检查在请求 Divide 后无响应，但存在依赖计算和内存压力，不能据此孤立归因 |
+| 忽略导出的 UV 旁支 | 后续崩溃画面明确显示 **第 23／40 帧，Cooking Op = uvlayout2**；这是旧 UVLayout 确实被请求的直接证据 |
+| 在 Manual 下测到 0 秒／0 面就当真实性能 | 部分只读到了旧缓存或没有取得有效结果；需区分缓存状态与真正 cook |
+| 对百万面逐帧重新 AutoSeam／Flatten／Layout | 产生重复工作和不稳定展开；静态低面数参考计算一次，存入 Stash，按对应传递 |
+| 复制整套动画当作长期修复 | 复制参数和关键帧不等于保持与原节点的实时联动；最后直接使用原 `bend3` 主链 |
+| 新 UV 使用 `uv_room_saved`，减面字段加入 `^uv_room_saved` | 实际失败文件中为 `* ^N ^uv_room_saved`，排除了新 UV 接缝保护。最终使用正式 `uv` 和原 `* ^N` 规则 |
+| 只看 UV 数值范围正确就宣布成功 | 有序错误或跨图块连线仍可全部位于 0–1；还需看单材质图块、棋盘格和动画 |
+| 全局缩小 UV 当作形状修复 | 失败版本将 UV 乘固定约 0.92357 以解决范围；这不能修复乱连、折叠或错误对应，后来单独墙体仍明显失败，最终撤销 |
+| 把所有坏 UV 解释为不同材质叠加 | 整屋叠加有可能正常，但单独墙体仍乱就是实质错误，必须修传递链 |
+| 只检查点数、面数，跨 detail 按整块字节复制 UV | 缺少面角／内部线性顺序一致性保证；最终明确按面及局部顶点写入 |
+| 用静止几何替换动画输入 | Stash 只提供 UV，当前几何始终来自原 `merge4`；验证写 UV 前后 P 不变 |
+| 提前删除所有旧分组 | 原细分过滤、翻面与控制器还用这些组；完成几何处理后再清理最终输出 |
+| `Geometry.deletePrimAttrib` 等不存在的调用 | 实际报过 AttributeError；找到 `hou.Attrib` 后调用 `.destroy()`，分组用 `group.destroy()` |
+| 给所有节点调用 `setDisplayFlag` | 创建导出副本时实际报 `RopNode` 无该方法；只对 `hou.SopNode` 设置 SOP 显示／渲染／模板旗标 |
+| `needsToCook(time=...)` 在本机不兼容 | Houdini 21.0.440 实际报不接受关键字；采用 `.needsToCook()` 的无参数调用 |
+| 误以为 `geometry()` 一定只读缓存 | `geometry()`、`geometryNoDep()` 会按需 cook；`infoTree(force_cook=False)` 也不保证跳过脏节点。缓存检查先核对 cookCount、needsToCook、errors |
+| 长 Base64 脚本粘贴损坏 | 曾发生编码长度错误和 SyntaxError；改为可读 Python，使用整段 `exec`，不夹入 `>>>`／`...` 提示符 |
+| 崩溃后依赖之前 Shell 的变量 | 临时恢复脚本只能用于当时会话；成功工程保存 Stash 和节点代码，重启不依赖旧内存 |
+| 只看脚本结束／另存成功 | 安装完成不等于动画或导出通过；最终以代表帧、完整导出、SP 和 UE 结果共同确认 |
+
+#### 44 个越界面角的实测记录
+
+缓存检查在第 1 帧发现：
+
+```text
+直到 ROOM_ANIM_divide2：
+  UV min ≈ (0.001953125, 0.001953125)
+  UV max ≈ (0.997962475, 0.997410178)
+  非有限值 0，越界 0
+
+旧副本 ROOM_ANIM_polyreduce1：
+  UV min ≈ (-0.002175637, -0.019204516)
+  UV max ≈ (0.997962475, 1.016657948)
+  非有限值 0，越界面角 44
+```
+
+这确定了该副本中**第一次范围异常**发生在 PolyReduce，并没有证明所有图块直到这一步都质量完好，也没有证明简单修正这 44 个数就能修好 UV。后续单独墙体视图证明确实还乱，统一缩放方案被否定。
+
+### 8. 以后制作“正确 UV＋带动画模型”的顺序
+
+1. **确定最终要用的源结构和数量。** 留出足够细分支撑所需变形；不要为了 UV 临时破坏造型、布尔或动画。
+2. **在稳定的静止／未变形源上展开。** 按材质、结构、硬边规划图块，保持已有正确部分；按材质集检查密度、范围、边距与重叠。
+3. **保存参考与对应关系。** Stash 或明确缓存几何；可变数量工程需要稳定的零件 ID 和局部面角 ID。只保存数组到 Shell 不算可恢复资产。
+4. **只把 vertex UV 写回原动态源。** 明确面角对应并验证点位未改，不复制参考的静止 P；在会改变拓扑的后处理之前传入。
+5. **让 UV 随后续处理自然插值。** 设置为 texturecoord，沿用原细分、翻面、法线和动画；删除或绕开后面会覆盖新 UV 的旧展开。
+6. **检查 UV 与减面的关系。** 正式 UV 应参与既有接缝规则；不能一边让减面忽略新接缝，一边承诺新 UV 完全保留。若要严格锁定几何或动画拓扑，另行设计已验证的静止减面参考／缓存，不能盲接。
+7. **最后整理输出材质与分组。** 保留制作阶段所需组到几何处理结束，最终再统一材质路径、名称与 Face Sets。
+8. **同源导出静态与动画。** SP 使用最终链的参考帧模型，UE 使用同一最终链的动画；不能拿低面数原始 Stash 画完，再把不一致的最终 UV 动画放进 UE。
+9. **验证代表帧，再完整导出。** 看正常状态、扭曲最大处和运动变化处；查看单材质 UV 与棋盘格，再做完整范围导出及 UE 检查。
+10. **冻结可用基线。** 保存成功 HIP、对应单帧模型、动画 ABC、贴图和实际导出设置。后续改数量、源拓扑或 UV 时先另存，再重新核对同步关系。
+
+### 9. 导出给 SP／UE：使用原正式节点
+
+正式动画路径是 `/obj/classroom_generator/geo1/rop_alembic1`。它现在通过原 `pack1` 读取修复后的最终输出。`ROOM_UV_ANIM_CHECK` 是棋盘格预览，静态 Stash 是参考；两者都不作为另一个独立动画资产替代正式输出。
+
+| 用途 | 设置示例（不是已回报的实际最终文件名） |
+| --- | --- |
+| SP 参考模型 | Alembic 单帧 `1 / 1 / 1`，例如 `E:/1120/ROOM_UV_SP_F1.abc` |
+| UE 动画 | 实际起始帧／结束帧／步长 1，例如 `E:/1120/ROOM_UV_ANIM.abc` |
+
+- 先保存修复后的 HIP。原归档 ROP 的范围曾为 `1–2`；导整段前必须主动填写真实范围，不能只改文件名。
+- 保留 `Save Attributes`；vertex 属性模式 `*` 包括 `uv`、`N`。Face Sets 使用 **Save Non-Empty Groups as Face Sets**，核对导入后的 15 个材质分类。
+- 采用 `Save to Disk` 执行；本次修复脚本不自动导出。后台另开进程可能额外占内存，并依赖已保存的 HIP，不作为初次验证的默认做法。
+- Painter 支持 Alembic 输入；用最终第 1 帧文件创建项目，使用现有 UV，避免再次自动展开。贴图导出给 UE 的资产应来自这份最终 UV。
+- UE 对该类变形动画使用 **Geometry Cache** 导入，核对材质槽、法线、采样时间和纹理附着。不要未经验证强行假设每帧拓扑恒定。
+- Alembic 保存几何、UV、动画及面集等数据，不会把 Painter 的图层或 UE 材质图一并传过去；棋盘格也只是检查材质。
+
+### 10. 为什么这次更快，以及哪些原因还不能断言
+
+本次用户报告从此前约一小时且失败，改善为 40 帧、4 GB 多、十多分钟完成。与之对应的明确结构变化是：
+
+- 正确 UV 在低面数源上计算并存好；动画计算时做明确的对应复制，不重新展开。
+- 从正式导出依赖中移除了旧 UV Unwrap／AutoSeam／Flatten／Layout。
+- 保留原动画主链，删除失败的复制动画与影子 UV 回写分支。
+- 最终使用明确的 15 类材质／面集，避免残留旧分类混入输出。
+
+这没有加入新的 Alembic 压缩设置，也没有为了提速降低已确认的细分级数。**尚未做控制变量 profiler／文件结构对比，不能精确分配各项加速比例，也不能把 4 GB 的体积变化全部归因于 UV、材质槽或某一种压缩。** 40 帧结果是该工程本次实测，不是对其他电脑／模型的耗时保证。
+
+### 11. 留档：本次成功的专用改接脚本
+
+<details>
+<summary>展开完整代码：从本次 ROOM_UV_INSET 诊断工程迁移到原动画直接使用正确 UV</summary>
+
+**仅适用于上述上传的诊断工程。已成功的 `ROOM_DIRECT_UV` 工程不要重复安装。** 脚本会检查预期节点与旧连接、先备份，另存新文件，并删除已经无效的旧展开和复制分支。不要当成任意 Houdini 工程都能运行的通用 UV 修复器。
+
+在 Houdini Python Shell 中整段执行；源 Stash 和专用节点必须来自该工程。运行所需的 UV 复制、材质分配与末端校验代码保存在成功 HIP 的各节点中；本节完整安装器仅供一次性迁移留档，日常使用不必重跑。
+
+```python
+exec(r"""
+import hou
+import json
+from datetime import datetime
+
+net = hou.node('/obj/classroom_generator/geo1')
+names = ['merge4', 'BOARD_WIRE_FACE_CHECK', 'subdivide1',
+         'DETAIL_SUBDIVIDE_2', 'bend3', 'divide1', 'divide2',
+         'timeshift1', 'polyreduce1', 'clean4', 'pack1', 'rop_alembic1',
+         'ROOM_UV_ANIM_INPUT', 'ROOM_UV_TAG_AS_TEXTURE',
+         'ROOM_UV_ANIM_MATERIALS', 'ROOM_UV_ANIM_OUT', 'ROOM_UV_ANIM_CHECK']
+if net is None or any(net.node(s) is None for s in names):
+    raise RuntimeError('请打开刚上传的 ROOM_UV_INSET 工程，节点不匹配，停止。')
+if abs(hou.frame() - 1) > 0.001:
+    raise RuntimeError('请先停在第 1 帧。')
+nodes = {s: net.node(s) for s in names}
+if nodes['BOARD_WIRE_FACE_CHECK'].input(0) != nodes['merge4']:
+    raise RuntimeError('原链已经改变或已安装，不重复修改。')
+bind = nodes['ROOM_UV_ANIM_INPUT']
+ref = bind.input(1)
+if ref is None or ref.name() != 'ROOM_ALL_UV_20261124_234637_284042':
+    raise RuntimeError('正确 UV 的来源不匹配，停止。')
+old_uv_names = ['uv_SP_FIX', 'attribcopy1', 'uvlayout2', 'uvflatten1', 'uvautoseam1']
+if any(net.node(s) is None for s in old_uv_names):
+    raise RuntimeError('旧 UV 分支与上传文件不同，停止。')
+allowed_consumers = set(old_uv_names + ['divide2', 'uvquickshade2'])
+for name in old_uv_names:
+    if any(n.name() not in allowed_consumers for n in net.node(name).outputs()):
+        raise RuntimeError('旧 UV 节点还有其他用途，停止：' + name)
+
+hou.setUpdateMode(hou.updateMode.Manual)
+rg = ref.geometry()
+labels = sorted(g.name() for g in rg.primGroups() if g.name().startswith('ROOM_'))
+if len(labels) != 15 or rg.findVertexAttrib('uv') is None:
+    raise RuntimeError('正确 UV 的材质分组或顶点属性不匹配。')
+paths = []
+for label in labels:
+    values = {p.attribValue('shop_materialpath') for p in rg.findPrimGroup(label).prims()}
+    if len(values) != 1 or not next(iter(values)):
+        raise RuntimeError('参考材质分配不一致：' + label)
+    paths.append(next(iter(values)))
+
+# Verify that the original deformation and geometry parameters are untouched.
+watch_names = ['transform6', 'subdivide1', 'DETAIL_SUBDIVIDE_2', 'normal1',
+               'bend3', 'divide1', 'divide2', 'polyreduce1', 'clean4']
+watched = [p for s in watch_names for p in net.node(s).parms()]
+before = [(p.rawValue(), tuple(k.asCode() for k in p.keyframes())) for p in watched]
+
+bind_code = '''import hou
+n = hou.pwd()
+g = n.geometry()
+g.clear()
+g.merge(n.input(0).geometry())
+r = n.input(1).geometry()
+gp, rp = g.prims(), r.prims()
+if len(gp) != len(rp) or g.intrinsicValue('pointcount') != r.intrinsicValue('pointcount'):
+    raise hou.NodeError('源模型拓扑改变，停止复制 UV。')
+for name in ('name', 'part'):
+    if g.findPrimAttrib(name) is not None and r.findPrimAttrib(name) is not None:
+        if g.primStringAttribValues(name) != r.primStringAttribValues(name):
+            raise hou.NodeError('零件顺序改变：' + name)
+before_p = g.pointFloatAttribValuesAsString('P')
+point_uv = g.findPointAttrib('uv')
+if point_uv is not None:
+    point_uv.destroy()
+target = g.findVertexAttrib('uv')
+if target is None:
+    target = g.addAttrib(hou.attribType.Vertex, 'uv', (0.0, 0.0, 0.0))
+reference = r.findVertexAttrib('uv')
+if reference is None or target.size() != reference.size():
+    raise hou.NodeError('UV 属性格式不匹配。')
+for dst, src in zip(gp, rp):
+    dv, sv = dst.vertices(), src.vertices()
+    if tuple(v.point().number() for v in dv) != tuple(v.point().number() for v in sv):
+        raise hou.NodeError('面顶点顺序改变，停止：' + str(dst.number()))
+    for a, b in zip(dv, sv):
+        a.setAttribValue(target, b.attribValue(reference))
+for source_group in r.primGroups():
+    if source_group.name().startswith('ROOM_'):
+        old_group = g.findPrimGroup(source_group.name())
+        if old_group is not None:
+            old_group.destroy()
+        group = g.createPrimGroup(source_group.name())
+        group.add([gp[p.number()] for p in source_group.prims()])
+if g.pointFloatAttribValuesAsString('P') != before_p:
+    raise hou.NodeError('位置校验失败。')
+'''
+
+material_code = 'int slot = -1;\n'
+for j, label in enumerate(labels):
+    material_code += 'if (inprimgroup(0, ' + json.dumps(label) + ', @primnum)) slot = ' + str(j) + ';\n'
+material_code += 'if (slot < 0) { error("Missing UV material group"); return; }\n'
+material_code += 'string labels[] = array(' + ','.join(json.dumps(s) for s in labels) + ');\n'
+material_code += 'string paths[] = array(' + ','.join(json.dumps(s) for s in paths) + ');\n'
+material_code += 's@material_name = labels[slot];\ns@shop_materialpath = paths[slot];\n'
+
+final_code = '''import hou, numpy as np
+n = hou.pwd()
+g = n.geometry()
+g.clear()
+g.merge(n.input(0).geometry())
+if g.findVertexAttrib('uv') is None:
+    raise hou.NodeError('正式 UV 缺失，停止。')
+uv = np.frombuffer(g.vertexFloatAttribValuesAsString('uv'), dtype=np.float32).reshape(-1, 3)
+if not uv.size or not np.isfinite(uv).all():
+    raise hou.NodeError('正式 UV 数据无效，停止。')
+outside = int(np.sum(((uv[:, :2] < -1e-5) | (uv[:, :2] > 1.00001)).any(axis=1)))
+print('最终 UV 检查，第', hou.frame(), '帧；越界角点：', outside)
+for name in ('unreal_material', 'material_id'):
+    a = g.findPrimAttrib(name)
+    if a is not None:
+        a.destroy()
+for group in list(g.primGroups()):
+    if group.name() not in LABELS:
+        group.destroy()
+'''.replace('LABELS', repr(labels))
+compile(bind_code, 'bind_uv', 'exec')
+compile(final_code, 'final_uv', 'exec')
+
+stamp = datetime.now().strftime('%Y%m%d_%H%M%S_%f')
+backup = 'E:/1120/ROOM_BEFORE_DIRECT_UV_' + stamp + '.hip'
+target = 'E:/1120/ROOM_DIRECT_UV_' + stamp + '.hip'
+hou.hipFile.save(file_name=backup)
+print('备份已保存：' + backup)
+ref.setDisplayFlag(True)
+
+bind.parm('python').set(bind_code)
+bind.setInput(0, nodes['merge4'])
+info = nodes['ROOM_UV_TAG_AS_TEXTURE']
+info.setInput(0, bind)
+info.parm('class').set('detail')
+info.parm('snippet').set('setattribtypeinfo(0, "vertex", "uv", "texturecoord");')
+nodes['BOARD_WIRE_FACE_CHECK'].setInput(0, info)
+nodes['divide2'].setInput(0, nodes['divide1'])
+nodes['divide2'].setInput(1, nodes['timeshift1'])
+old_checker = net.node('uvquickshade2')
+if old_checker is not None:
+    old_checker.setInput(0, nodes['divide1'])
+
+materials = nodes['ROOM_UV_ANIM_MATERIALS']
+materials.setInput(0, nodes['clean4'])
+materials.parm('class').set('primitive')
+materials.parm('snippet').set(material_code)
+out = nodes['ROOM_UV_ANIM_OUT']
+out.setInput(0, materials)
+out.parm('python').set(final_code)
+nodes['pack1'].setInput(0, out)
+nodes['ROOM_UV_ANIM_CHECK'].setInput(0, out)
+
+if [(p.rawValue(), tuple(k.asCode() for k in p.keyframes())) for p in watched] != before:
+    raise RuntimeError('原参数校验不一致，请恢复备份：' + backup)
+
+# Save the working connections before removing obsolete nodes.
+hou.hipFile.save(file_name=target)
+obsolete = old_uv_names + [n.name() for n in net.children() if n.name().startswith('ROOM_ANIM_')]
+obsolete += ['ROOM_UV_ANIM_PACK', 'ROOM_UV_ANIM_EXPORT_TEST',
+             'ROOM_FINAL_WALLS_CHECK', 'ROOM_FINAL_WALLS_VIEW']
+for name in obsolete:
+    node = net.node(name)
+    if node is not None:
+        node.destroy()
+
+bind.setComment('按对应面角复制正确 UV；原位置和动画输入保持。')
+out.setComment('原动画链的正式 UV 输出；没有重新展开或缩放。')
+check = nodes['ROOM_UV_ANIM_CHECK']
+check.setRenderFlag(False)
+check.setDisplayFlag(True)
+check.setSelected(True, clear_all_selected=True)
+hou.hipFile.save(file_name=target)
+print('已另存：' + target)
+print('原细分、变形、减面参数及关键帧校验一致。')
+print('原动画仍使用原 bend3；正式导出仍是原 rop_alembic1。')
+print('旧 UV 展开和失败副本已删除；没有执行导出。')
+print('现在只更新第 1 帧的模型和 UV；未执行导出。')
+hou.setUpdateMode(hou.updateMode.AutoUpdate)
+
+""")
+```
+
+</details>
+
+### 12. 后续接手时的优先级
+
+1. 用户说“教室墙体／本体”时，优先打开并核对 `ROOM_DIRECT_UV_20261125_004415_787159.hip`，读取原主链和本节；不要重新运行复制动画、影子 UV、INSET 缩放或旧全场景展开脚本。
+2. 保留正确 Stash，不把“旧参考”一律当垃圾删除；当前成功工程重启后可直接继续，不需要旧 Shell 数据。
+3. 材质、灯光和镜头工作在这个已跑通的 UV／动画基线上进行。桌椅 `/obj/other` 的验收状态按下一节单独判断，不能因本体 40 帧成功就改写成桌椅所有问题均已完成。
+4. 需要新检查时，先读实际缓存和依赖，不再默认强制 cook 第 39 帧全链；只在有新失败或明确验证需求时扩大测试。
+
+参考：[SideFX Divide 的参考几何输入](https://www.sidefx.com/docs/houdini/nodes/sop/divide.html)、[PolyReduce 的顶点属性接缝](https://www.sidefx.com/docs/houdini/nodes/sop/polyreduce.html)、[VEX texturecoord 类型](https://www.sidefx.com/docs/houdini/vex/functions/setattribtypeinfo.html)、[HOM Vertex](https://www.sidefx.com/docs/houdini/hom/hou/Vertex.html)、[Painter 导入格式](https://experienceleague.adobe.com/en/docs/substance-3d/general-knowledge/ecosystem/import-and-export-formats)。
+
+---
+
+
 ## 2026-11-24：改变椅子数量、替换书本后的 UV 修复
 
-本节是当前交接状态；后文保留早期流程与历史问题，不应把旧的“待运行”记录误认为本次补丁没有执行。
+本节记录 `/obj/other` 桌椅的 11 月 24 日修复；教室本体的最新成功见上节。后文保留早期流程与历史问题，不应把旧的“待运行”记录误认为本次桌椅补丁没有执行。
 
 ### 已保存版本与验收证据
 
@@ -112,20 +626,15 @@ merge1（当前书本／纸笔＋被标记的原桌椅）
 - 只备份／另存请求的 HIP，不复制整个资源目录。先检查现有工程、参考哈希和连接，再修改。
 - 不得为了修 UV 改数量、布局、动画、Boolean 或删除旧回退参考；避免再次对整班做全新展开。
 
-### 教室本体导出耗时：已发现结构，尚未完成优化
+### 教室本体导出耗时：11 月 24 日历史诊断，已由新成功记录更新
 
-这是 `/obj/classroom_generator/geo1` 的独立问题，不要与 `/obj/other` 桌椅补丁混为一谈。用户报告导出约一小时，在第 39 帧附近失败；点击屏幕与失败之间的因果尚未确认。
+这是 `/obj/classroom_generator/geo1` 的独立问题。早期用户报告约一小时导出并在第 39 帧附近失败，当时尚不能确定具体耗时节点，也不能认定点击屏幕导致失败。
 
-上传 HIP 中核对到：
+早期核对到 `uv_SP_FIX` 在 `bend3` 后、`polyreduce1` 保留 76.7%、`timeshift1` 使用 `$F` 而非冻结帧，导出四类属性模式均为 `*`，全部非空组输出为 Face Sets。上传的早期 ROP 范围为 `1–2`、路径为 `E:/1120/space4.abc`，不等于用户失败长导出的完整设置。
 
-- `subdivide1` 对合并后的整个教室做三级细分，而非仅房间本体。历史截图细分后约 111 万面，后续三角化超过 222 万面；这些面数来自此前截图，不是本次离线重新 cook 的结果。
-- `uv_SP_FIX` 位于 `bend3` 之后，依赖变形后几何。
-- `polyreduce1` 位于变形、UV、三角化之后，保留比例 76.7%，未接静止参考；是需要测量的逐帧重计算候选。
-- UV 旁支 `timeshift1` 的 frame 表达式是 `$F`，并未冻结第 1 帧；旁支是否被本次导出请求计算仍需 profiler 确认。
-- Alembic 四类属性模式均为 `*`，输出所有非空组为 Face Sets，可能增加分析／写盘负担。
-- 上传版本导出节点结束帧是 2，输出为 `E:/1120/space4.abc`；用户失败的长导出显然使用了不同设置，不能把上传设置当成失败现场完整记录。
+随后尝试强制计算第 39 帧：请求 Divide 后无响应且内存上升，用户结束进程；没有得到可信的完整单帧性能分解。之后另一次导出在第 23／40 帧崩溃，界面明确显示正在计算 `uvlayout2`。因此不能继续把“卡在 Divide”当成唯一根因，也不再把重跑第 39 帧全链作为默认下一步。
 
-下一步先测第 39 帧几何 cook，再单独导出该帧到新 ABC，分离几何计算与写盘耗时；必要时在隔离分支测试细分范围、稳定 UV／减面和逐帧几何缓存。缓存首次也有成本，但可检查缺失帧并补算。**当前没有性能实测、没有已完成的导出提速，也没有完整 ABC／UE 验收。**
+本次重新读取的版本含两个按分组分工的细分节点（3 级与 2 级），并非无条件对所有教室物体做 3 级；实际过滤规则见[11 月 25 日成功记录](#room-uv-animation-20261125)。最终保留原细分和动画，去除旧 UV 展开依赖，以正确 UV 直接进入原主链，用户已完成 **40 帧、4 GB 多、十多分钟** 的导出并展示 SP／UE 结果。旧“尚未提速、尚无完整导出”的状态只描述当时，现已被本次结果更新。
 
 ---
 
@@ -141,7 +650,7 @@ merge1（当前书本／纸笔＋被标记的原桌椅）
 4. 将 vertex `uv` 复制到具有相同拓扑和顶点对应关系的动画几何。
 5. 让 UV 随既有位置动画及后续几何处理传递，不在每个动画帧重新展开。
 
-用户已观察到木头和部分铁件可在 SP 绘画，多帧运动时纹理基本附着。书本原本已有正确 UV，应保护。**最新整段导出尚需验证。**
+桌椅部分：用户已观察到木头和部分铁件可在 SP 绘画，多帧运动时纹理基本附着；书本原本已有正确 UV，应保护。**该桌椅补丁的整段导出仍按其独立证据验收。** 教室本体则已于 11 月 25 日完成 40 帧导出，见上方成功记录。
 
 #### 重要边界：这是按顺序复制，不是稳定 ID 匹配
 
@@ -172,7 +681,7 @@ merge1（当前书本／纸笔＋被标记的原桌椅）
 
 ### 3. 在进入减面前携带正确 UV
 
-先前观察到 `merge4`、`divide2`、`edit4` 的数量在检查帧间相同，而原 `polyreduce3` 输出数量变化。修复分支在减面前传递 UV，并为克隆减面节点提供静止参考。
+以下是 `/obj/other` 桌椅历史方案：先前观察到 `merge4`、`divide2`、`edit4` 的数量在检查帧间相同，而原 `polyreduce3` 输出数量变化。桌椅修复分支在减面前传递 UV，并为克隆减面节点提供静止参考。教室本体最终使用原动画主链，不要将这个桌椅方案机械套入教室。
 
 数量变化本身不必然证明 UV 错误，但不能在未确认对应关系时，把静止减面输出的 UV 按索引强行复制给另一个动画减面输出。
 
@@ -180,7 +689,7 @@ merge1（当前书本／纸笔＋被标记的原桌椅）
 
 ## Node Breakdown
 
-以下是已分析版本的关键名称。**新接手时必须读取实际连接，不按项目文件名猜版本。**
+下表为 `/obj/other` 桌椅已分析版本的关键名称；教室本体另见上方成功主链。**新接手时必须读取实际连接，不按项目文件名猜版本。**
 
 | 节点／路径 | 作用 |
 | --- | --- |
@@ -303,7 +812,9 @@ UV 岛旋转不等于模型变歪，也不必然意味着拉伸，但影响二�
 
 ## Unreal Engine Integration
 
-### 当前验收顺序
+### 桌椅与静态／动画切换的后续验收顺序
+
+教室本体已完成本次完整导出和 SP／UE 画面确认；下列待办主要针对桌椅和整套镜头切换，不回退本体已确认的成功状态。
 
 1. **金属修复**：近看桌斗左右外侧、内侧、上下表面、上段杆、横杆、挂钩；检查覆盖、密度和拉伸，不只看 DONE。
 2. **静态版**：确认 25 桌＋25 椅，使用自己的有效 UV；一帧导入 SP，检查材质槽、绘画覆盖、UV 面积和木纹方向。
@@ -315,7 +826,9 @@ UV 岛旋转不等于模型变歪，也不必然意味着拉伸，但影响二�
 
 ### 性能现状
 
-用户报告每帧导出耗时约翻倍，尚未 profiling 确认。
+**最新教室本体实测：40 帧、4 GB 多、十多分钟完成；没有改成另一套动画，也没有降低原细分。** 结构变化与归因边界见上方成功记录。
+
+以下保留此前桌椅／旧链的历史记录：用户曾报告每帧导出耗时约翻倍，当时尚未 profiling 确认。
 
 可能存在旧桌椅链与克隆修复链重复计算，不可未经测量断言。归档含四份大型锁定几何快照，是 HIP 较大的原因之一；不要为了省空间删除唯一可回退参考。
 
@@ -328,26 +841,30 @@ UV 岛旋转不等于模型变歪，也不必然意味着拉伸，但影响二�
 | 项目 | 当前状态 |
 | --- | --- |
 | Houdini → SP → UE 链路、HDRI | 用户确认已跑通／准备 |
+| 教室本体正确 UV | 2026-11-25 直接写入原动态源；原细分、Bend、几何处理参数与关键帧保持，成功基线 ROOM_DIRECT_UV |
+| 教室本体材质分类 | 最终 15 个 ROOM_* 分类；用户 SP 列表与 UE 带材质画面确认 |
+| 教室本体完整 40 帧 | 用户确认 4 GB 多／十多分钟导出完成，已展示 UE 弯曲状态；未逐帧逐面自动验收 |
 | 书本源 UV | 2026-11-24 已绕过旧全场景 UV 覆盖；用户确认预览可用，SP／UE 新版本仍需验证 |
 | 改数量后的桌椅 UV | 2026-11-24 按零件复用旧 UV、补齐两个部分面对应并另存成功；第 1／48 帧截图与用户反馈确认当前预览可用 |
-| 静止参考 UV 传递动画 | 已有多帧附着的用户观察，最新全段仍待验证 |
+| 桌椅静止参考 UV 传递动画 | 已有多帧附着的用户观察；桌椅专属全段状态与本体独立 |
 | 木头纹理密度 | 已运行并明显改善 |
 | 部分铁件与横杆 | 已改善 |
 | 桌斗外侧板、部分上段杆 | 小 UV 成因已由归档数据确认；最新补丁待运行与画面验收 |
 | 木头主要 UV 岛朝向 | 待处理 |
 | 25 桌＋25 椅静态版 | 制作决策已确定，最终导出与材质待验收 |
-| 动画版完整 40 帧 | 待 UE 验证 |
+| 桌椅动画版完整 40 帧 | 专属导出及近景问题仍需独立确认；不能以本体成功代替 |
 | 蓝图切换 | 后续工作 |
 
 ### 后续 Codex 接手顺序
 
-1. 先读取本页 2026-11-24 最新记录，以 `1124_UV_CHECK_20261124_151657_073664.hip` 为已确认基线，仍需核对用户当前实际工程和连接；不要重新运行旧的整班 UV 展开脚本。
-2. 核对最新金属补丁实际执行结果，保留正常书本、木头与镜头。
-3. 按两套资产决策完成静态版与动画版验证。
-4. 继续墙体与教室陈设，避免扩展无关系统。
+1. 教室本体优先读取本页 [2026-11-25 成功记录](#room-uv-animation-20261125)，以 `ROOM_DIRECT_UV_20261125_004415_787159.hip` 为基线，核对原正式 `rop_alembic1` 依赖；不要重建复制动画、重跑旧 UV Layout 或全局缩放 UV。
+2. 桌椅另读 2026-11-24 记录，以 `1124_UV_CHECK_20261124_151657_073664.hip` 为该部分已确认预览基线，核对用户实际当前工程；不要重新展开整班，也不要误动已经正常的书本、木头与镜头。
+3. 核对桌椅金属补丁实际执行结果，按两套资产决策完成剩余静态／动画及切换验证。
+4. 在教室本体已成功的 UV／动画上继续材质、灯光、镜头与必要陈设。旧失败记录用于排雷，不代表应该重复执行。
 
 ### 墙体沿用的原则
 
-最终所需拓扑完成后建立 UV，变形前保留稳定对应关系，动画帧间不重复展开。
+此原则已用于上方本次教室成功修复：在选定的低面数源上建立 UV，在原细分与变形前按对应写回正式 UV，动画帧间不重复展开。未来改源拓扑时重新检查对应。
 
 若墙体逐帧 Boolean、切割或生成新面，应先设计稳定分块、预切模型或可验证映射；**不能直接把冻结帧 UV 按顶点顺序复制到变化拓扑。**
+
