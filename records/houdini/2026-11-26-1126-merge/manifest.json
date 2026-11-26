@@ -1,0 +1,77 @@
+{
+  "target_sha256": "aa3c8d64c79c8e3e45dd095e6dc4b6215cfb30912df50c05a55cd0d5c5f7efa5",
+  "source_sha256": "fba1ccd9ab7e334ccca2c632ccd3613a3a20274893aa8aaa405b56be4af81835",
+  "merged_sha256": "714d5ba42c2732807220de570ec520f671a30ca7b35837656d47c830ff491c80",
+  "merged_bytes": 549322663,
+  "source_other_records": 1966,
+  "preserved_target_records_including_trailer": 1715,
+  "source_other_raw_records_exact": true,
+  "all_other_target_raw_records_exact": true,
+  "input_files_unchanged": true,
+  "houdini_native_load_or_cook_tested": false,
+  "git_reference": "https://github.com/Linn-Qi/ue-devlog/blob/main/Houdini.md",
+  "embedded_operator_definitions_compatible_ignoring_container_dates": true,
+  "referenced_source_material_records_all_exist_and_equal_in_target": true,
+  "referenced_camera_equal": true,
+  "independent_libarchive_record_count": 3680,
+  "tested_supplied_local_script_on_uploaded_files": true,
+  "repeat_script_invocation_is_no_op": true,
+  "node_blocks_preserved_in_original_loading_phases": true,
+  "record_date": "2026-11-26",
+  "working_path": "E:/1126/1126.hip",
+  "protected_source_paths": [
+    "E:/1126/tableright.hip",
+    "E:/1126/wallright.hip"
+  ],
+  "rollback_path_not_result": "E:/1126/_merge_rollback/1126.hip",
+  "source_sizes": {
+    "uploaded_1126": 417487984,
+    "tableright": 540938171
+  },
+  "user_feedback": {
+    "correct_merged_file_opened_in_houdini": true,
+    "visible_frame": 20,
+    "statement": "第一次，非常接近完美的一个桌椅形态和教室形态",
+    "confirmed_scope": "combined desk/chair and classroom shape in shown viewport",
+    "new_full_animation_or_export_validation": false
+  },
+  "analysis_machine_houdini_native_load_or_cook_tested": false,
+  "wallright_standalone_file_uploaded": false,
+  "wallright_relationship": "User identified uploaded 1126 as a direct copy of wallright",
+  "node_counts": {
+    "all": 762,
+    "other_including_root": 429,
+    "classroom_including_root": 274
+  },
+  "source_scope_predicate": [
+    "obj/other.",
+    "obj/other/"
+  ],
+  "source_replacement_blocks": [
+    {
+      "start": 1046658,
+      "end_exclusive": 1058973
+    },
+    {
+      "start": 2640892,
+      "end_exclusive": 540767570
+    }
+  ],
+  "target_replaced_blocks": [
+    {
+      "start": 1046630,
+      "end_exclusive": 1058955
+    },
+    {
+      "start": 11025897,
+      "end_exclusive": 417317886
+    }
+  ],
+  "script_offsets_valid_only_for_exact_input_sha256": true,
+  "geometry_resources_embedded_in_snapshot": false,
+  "warning_icon": {
+    "object": "/obj/other",
+    "observed_in_accepted_screenshot": true,
+    "text_not_inspected": true
+  }
+}
