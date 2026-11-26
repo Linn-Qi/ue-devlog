@@ -80,6 +80,12 @@ Dream-state material blending
 
 [View Material Workflow Breakdown](Material.md)
 
+### Substance Painter AI Codec
+
+旧石灰灰泥制作、Painter Python 控制台操作、贴图丢失后的工程恢复，以及与 AI 协作的技术日志。
+
+[查看 Substance Painter AI Codec 流程](Substance_Painter_AI_Codec.md)
+
 ### Houdini
 
 A dedicated development log for Houdini studies and procedural workflow experiments.
